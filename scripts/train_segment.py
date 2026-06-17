@@ -3,6 +3,7 @@ os.environ["MPLBACKEND"] = "Agg"
 
 import json
 import locale
+import re
 import yaml
 import shutil
 import argparse
@@ -75,6 +76,36 @@ def list_experiments(results_dir):
             folders.append(name)
     folders.sort()
     return folders
+
+
+def find_latest_experiment_dir(results_dir, experiment_name):
+    """
+    Find the latest experiment directory when YOLO has auto-suffixed
+    directories (e.g. exp, exp-2, exp-3). Returns the directory name
+    with the highest numeric suffix, or None if no match.
+    """
+    if not os.path.exists(results_dir):
+        return None
+
+    # Match: experiment_name or experiment_name-<digits>
+    pattern = re.compile(r'^' + re.escape(experiment_name) + r'(?:-(\d+))?$')
+
+    best_dir = None
+    best_suffix = -1  # -1 means "not even the base dir found"
+
+    for name in os.listdir(results_dir):
+        full_path = os.path.join(results_dir, name)
+        if not os.path.isdir(full_path):
+            continue
+        match = pattern.match(name)
+        if match:
+            suffix_str = match.group(1)
+            suffix = int(suffix_str) if suffix_str else 0
+            if suffix > best_suffix:
+                best_suffix = suffix
+                best_dir = name
+
+    return best_dir
 
 
 # ── 命令行参数 ────────────────────────────────────────────
@@ -277,6 +308,12 @@ def start_new_training(config):
 
 
 def resume_training(config):
+    # YOLO may have auto-renamed the output directory (e.g. exp → exp-3).
+    # Find the latest matching directory so we resume from the correct run.
+    latest_dir = find_latest_experiment_dir(config.results_dir, config.experiment_name)
+    if latest_dir is not None and latest_dir != config.experiment_name:
+        config.experiment_name = latest_dir
+
     if not os.path.exists(config.last_pt):
         print(f"\n{_t(_loc, 'resume.not_found', path=config.last_pt)}")
         choice = input(_t(_loc, "resume.fallback_prompt")).strip().lower()
