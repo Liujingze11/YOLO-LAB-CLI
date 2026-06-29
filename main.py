@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """YOLO-LAB-CLI entry point — i18n, arg parsing, mode menu."""
 
-import sys
-import os
 import json
 import locale
 import argparse
