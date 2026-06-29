@@ -19,7 +19,7 @@ Command-line YOLO segmentation training tool built on Ultralytics.
 git clone https://github.com/Liujingze11/YOLO-LAB-CLI.git
 cd YOLO-LAB-CLI
 pip install -r requirements.txt
-python scripts/train_segment.py
+python main.py
 ```
 
 ## Requirements
@@ -35,25 +35,26 @@ pip install ultralytics pyyaml
 
 ```
 YOLO-LAB-CLI/
-├── scripts/                # Core training scripts
-│   ├── train_segment.py    # Main training script (interactive)
-│   ├── config.py           # TrainConfig data class
-│   ├── paths.py            # Path definitions
-│   ├── train_logger.py     # CSV logging
-│   └── predict_test.py     # Inference testing
+├── main.py                 # Main entry point
+├── train.py                # Training module
+├── predict.py              # Inference module
+├── config.py               # Configuration data classes
+├── train_logger.py         # CSV logging
+├── infer_task_params.json  # Task-specific inference parameters
+├── data.yaml               # Dataset configuration
+├── requirements.txt        # Python dependencies
 ├── dataset_tools/          # Dataset splitting & label utilities
 │   ├── create_empty_labels.py
 │   ├── split_train_val/
 │   ├── split_train_val_test/
 │   └── split_images_only/
-├── pretrained_models/      # Pretrained models
-├── data.yaml               # Dataset configuration
-└── requirements.txt
+├── locales/                # i18n translation files
+└── pretrained_models/      # Pretrained models
 ```
 
 ## Training Modes
 
-Run `python scripts/train_segment.py` and choose:
+Run `python main.py` and choose:
 
 - **1** — New training from initial weights
 - **2** — Resume from last.pt
@@ -62,16 +63,16 @@ Run `python scripts/train_segment.py` and choose:
 ## CLI Options
 
 ```bash
-python scripts/train_segment.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name my_experiment
+python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name my_experiment
 ```
 
 Language is auto-detected from the system locale. Override with `--lang`:
 
 ```bash
-python scripts/train_segment.py --lang en   # English
-python scripts/train_segment.py --lang fr   # Français
-python scripts/train_segment.py --lang es   # Español
-python scripts/train_segment.py --lang zh   # 中文
+python main.py --lang en   # English
+python main.py --lang fr   # Français
+python main.py --lang es   # Español
+python main.py --lang zh   # 中文
 ```
 
 ## data.yaml Format

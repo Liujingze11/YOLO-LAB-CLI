@@ -19,7 +19,7 @@ Outil de formation en ligne de commande pour la segmentation YOLO, basé sur Ult
 git clone https://github.com/Liujingze11/YOLO-LAB-CLI.git
 cd YOLO-LAB-CLI
 pip install -r requirements.txt
-python scripts/train_segment.py
+python main.py
 ```
 
 ## Prérequis
@@ -33,7 +33,7 @@ pip install ultralytics pyyaml
 
 ## Modes d'Entraînement
 
-Lancez `python scripts/train_segment.py` et choisissez :
+Lancez `python main.py` et choisissez :
 
 - **1** — Nouvel entraînement depuis les poids initiaux
 - **2** — Reprendre depuis last.pt
@@ -42,16 +42,16 @@ Lancez `python scripts/train_segment.py` et choisissez :
 ## Options CLI
 
 ```bash
-python scripts/train_segment.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name mon_experience
+python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name mon_experience
 ```
 
 La langue est détectée automatiquement. Forcer avec `--lang` :
 
 ```bash
-python scripts/train_segment.py --lang fr   # Français
-python scripts/train_segment.py --lang en   # English
-python scripts/train_segment.py --lang zh   # 中文
-python scripts/train_segment.py --lang es   # Español
+python main.py --lang fr   # Français
+python main.py --lang en   # English
+python main.py --lang zh   # 中文
+python main.py --lang es   # Español
 ```
 
 ## Résultats

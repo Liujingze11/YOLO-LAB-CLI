@@ -19,7 +19,7 @@ YOLO 分割模型命令行训练工具，基于 Ultralytics。
 git clone https://github.com/Liujingze11/YOLO-LAB-CLI.git
 cd YOLO-LAB-CLI
 pip install -r requirements.txt
-python scripts/train_segment.py
+python main.py
 ```
 
 ## 依赖
@@ -35,25 +35,26 @@ pip install ultralytics pyyaml
 
 ```
 YOLO-LAB-CLI/
-├── scripts/                # 训练核心脚本
-│   ├── train_segment.py    # 训练主脚本（交互式）
-│   ├── config.py           # TrainConfig 配置类
-│   ├── paths.py            # 路径定义
-│   ├── train_logger.py     # CSV 日志
-│   └── predict_test.py     # 推理测试
+├── main.py                 # 主入口
+├── train.py                # 训练模块
+├── predict.py              # 推理模块
+├── config.py               # 配置类
+├── train_logger.py         # CSV 日志
+├── infer_task_params.json  # 任务推理参数
+├── data.yaml               # 数据集配置
+├── requirements.txt        # Python 依赖
 ├── dataset_tools/          # 数据集分割 & 标签工具
 │   ├── create_empty_labels.py
 │   ├── split_train_val/
 │   ├── split_train_val_test/
 │   └── split_images_only/
-├── pretrained_models/      # 预训练模型
-├── data.yaml               # 数据集配置
-└── requirements.txt
+├── locales/                # i18n 翻译文件
+└── pretrained_models/      # 预训练模型
 ```
 
 ## 训练模式
 
-运行 `python scripts/train_segment.py` 后选择：
+运行 `python main.py` 后选择：
 
 - **1** — 新训练，从初始权重开始
 - **2** — 续训，从上次 `last.pt` 继续
@@ -62,16 +63,16 @@ YOLO-LAB-CLI/
 ## 命令行参数
 
 ```bash
-python scripts/train_segment.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name my_experiment
+python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name my_experiment
 ```
 
 语言默认根据系统自动检测，也可通过 `--lang` 指定：
 
 ```bash
-python scripts/train_segment.py --lang zh   # 中文
-python scripts/train_segment.py --lang en   # English
-python scripts/train_segment.py --lang fr   # Français
-python scripts/train_segment.py --lang es   # Español
+python main.py --lang zh   # 中文
+python main.py --lang en   # English
+python main.py --lang fr   # Français
+python main.py --lang es   # Español
 ```
 
 ## data.yaml 格式
