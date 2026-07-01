@@ -107,7 +107,10 @@ def build_train_kwargs(config, use_augment):
         "device": config.device,
         "project": config.results_dir,
         "name": config.experiment_name,
-        "plots": False,
+        "plots": True,
+        "lr0": config.lr0,
+        "close_mosaic": config.close_mosaic,
+        "multi_scale": config.multi_scale,
     }
     if use_augment:
         kwargs.update({

@@ -28,6 +28,9 @@ class TrainConfig:
     imgsz: int = 640
     batch: int = 8
     device: int = 0
+    lr0: float = 0.0005
+    close_mosaic: int = 10
+    multi_scale: float = 0.5
 
     experiment_name: str = "seg_dataset771_random__aug_e100"
 
