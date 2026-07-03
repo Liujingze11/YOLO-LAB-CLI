@@ -1,6 +1,6 @@
 # YOLO Lab CLI
 
-[English](README.md) | [Français](README_fr.md) | [Español](README_es.md)
+[English](../README.md) | [Français](README_fr.md) | [Español](README_es.md)
 
 YOLO 分割模型命令行训练工具，基于 Ultralytics。
 
@@ -35,21 +35,25 @@ pip install ultralytics pyyaml
 
 ```
 YOLO-LAB-CLI/
-├── main.py                 # 主入口
-├── train.py                # 训练模块
-├── predict.py              # 推理模块
-├── config.py               # 配置类
-├── train_logger.py         # CSV 日志
-├── infer_task_params.json  # 任务推理参数
+├── main.py                 # CLI 入口（国际化、参数解析、模式菜单）
+├── train.py                # 训练流程（新训练 / 续训 / 微调）
+├── config.py               # 路径默认值 + core 重导出
 ├── data.yaml               # 数据集配置
-├── requirements.txt        # Python 依赖
-├── dataset_tools/          # 数据集分割 & 标签工具
-│   ├── create_empty_labels.py
-│   ├── split_train_val/
-│   ├── split_train_val_test/
-│   └── split_images_only/
+├── core/                   # 共享库（CLI/GUI/LAB 完全一致）
+│   ├── config.py           # TrainConfig 数据类
+│   ├── training.py         # 训练工具函数
+│   ├── train_logger.py     # CSV 日志
+│   ├── device.py           # GPU 检测
+│   ├── i18n.py             # 国际化辅助
+│   └── paths.py            # 模型注册表
+├── tools/                  # 工具脚本
+│   ├── predict_tools/      # 推理（predict.py + 任务参数）
+│   └── dataset_tools/      # 数据集切分 & 标签工具
+├── outputs/                # 训练输出（git-ignored）
+│   ├── result/             # 模型权重 & 曲线图
+│   └── logs/               # CSV 训练日志
 ├── locales/                # i18n 翻译文件
-└── pretrained_models/      # 预训练模型
+└── pretrained_models/      # 预训练模型权重
 ```
 
 ## 训练模式
@@ -88,8 +92,8 @@ names:
 
 ## 输出
 
-- 实验结果：`result/<experiment_name>/weights/` (best.pt, last.pt)
-- CSV 日志：`train_logs/`
+- 权重与曲线图：`outputs/result/<experiment_name>/`
+- CSV 日志：`outputs/logs/`
 
 ## License
 

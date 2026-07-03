@@ -1,6 +1,6 @@
 # YOLO Lab CLI
 
-[English](README.md) | [中文](README_zh.md) | [Español](README_es.md)
+[English](../README.md) | [中文](README_zh.md) | [Español](README_es.md)
 
 Outil de formation en ligne de commande pour la segmentation YOLO, basé sur Ultralytics.
 
@@ -56,8 +56,8 @@ python main.py --lang es   # Español
 
 ## Résultats
 
-- Résultats : `result/<experiment_name>/weights/` (best.pt, last.pt)
-- Journaux CSV : `train_logs/`
+- Poids et graphiques : `outputs/result/<experiment_name>/`
+- Journaux CSV : `outputs/logs/`
 
 ## License
 
