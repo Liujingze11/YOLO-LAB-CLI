@@ -1,6 +1,6 @@
 # YOLO Lab CLI
 
-[中文](README_zh.md) | [Français](README_fr.md) | [Español](README_es.md)
+[中文](docs/README_zh.md) | [Français](docs/README_fr.md) | [Español](docs/README_es.md)
 
 Command-line YOLO segmentation training tool built on Ultralytics.
 
@@ -35,21 +35,25 @@ pip install ultralytics pyyaml
 
 ```
 YOLO-LAB-CLI/
-├── main.py                 # Main entry point
-├── train.py                # Training module
-├── predict.py              # Inference module
-├── config.py               # Configuration data classes
-├── train_logger.py         # CSV logging
-├── infer_task_params.json  # Task-specific inference parameters
+├── main.py                 # CLI entry point (i18n, arg parsing, mode menu)
+├── train.py                # Training flows (new / resume / fine-tune)
+├── config.py               # Path defaults + core re-exports
 ├── data.yaml               # Dataset configuration
-├── requirements.txt        # Python dependencies
-├── dataset_tools/          # Dataset splitting & label utilities
-│   ├── create_empty_labels.py
-│   ├── split_train_val/
-│   ├── split_train_val_test/
-│   └── split_images_only/
+├── core/                   # Shared library (identical across CLI/GUI/LAB)
+│   ├── config.py           # TrainConfig dataclass
+│   ├── training.py         # Training utilities
+│   ├── train_logger.py     # CSV logging
+│   ├── device.py           # GPU detection
+│   ├── i18n.py             # i18n helpers
+│   └── paths.py            # Model registry
+├── tools/                  # Utility scripts
+│   ├── predict_tools/      # Inference (predict.py + task params)
+│   └── dataset_tools/      # Dataset splitting & label utilities
+├── outputs/                # Training outputs (git-ignored)
+│   ├── result/             # Model weights & plots
+│   └── logs/               # CSV training logs
 ├── locales/                # i18n translation files
-└── pretrained_models/      # Pretrained models
+└── pretrained_models/      # Pretrained model weights
 ```
 
 ## Training Modes
@@ -88,8 +92,8 @@ names:
 
 ## Outputs
 
-- Results: `result/<experiment_name>/weights/` (best.pt, last.pt)
-- CSV logs: `train_logs/`
+- Weights & plots: `outputs/result/<experiment_name>/`
+- CSV logs: `outputs/logs/`
 
 ## License
 
