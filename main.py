@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """YOLO-LAB-CLI entry point — i18n, arg parsing, mode menu."""
 
-import json
 import locale
 import argparse
 from pathlib import Path
 
-from config import TrainConfig
+from config import TrainConfig, DATA_YAML, MODEL_FILE, RESULTS_DIR, LOG_DIR
 from train import set_locale, start_new_training, resume_training, train_from_previous_best
+from core.i18n import t as _t, load_locale
 
 # ── i18n ──────────────────────────────────────────────────
 
@@ -24,22 +24,6 @@ def _detect_lang():
     except Exception:
         pass
     return "en"
-
-
-def _load_locale(lang):
-    path = LOCALE_DIR / f"{lang}.json"
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def _t(loc, key, **kwargs):
-    text = loc.get(key, key)
-    if kwargs:
-        try:
-            text = text.format(**kwargs)
-        except (KeyError, ValueError):
-            pass
-    return text
 
 
 # ── CLI ──────────────────────────────────────────────────
@@ -72,12 +56,17 @@ def override_config_from_args(config, args):
 def main():
     args = parse_args()
     lang = args.lang or _detect_lang()
-    _loc = _load_locale(lang)
+    _loc = load_locale(LOCALE_DIR, lang)
 
     # Inject locale into train module so all training functions can use it
     set_locale(_loc)
 
-    config = TrainConfig()
+    config = TrainConfig(
+        data_yaml=DATA_YAML,
+        model_file=MODEL_FILE,
+        results_dir=RESULTS_DIR,
+        log_dir=LOG_DIR,
+    )
     config = override_config_from_args(config, args)
 
     print(_t(_loc, "mode.select"))

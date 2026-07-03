@@ -1,13 +1,14 @@
-path: ./data/Source Data/datasets_all_pro
+path: /home/ljz/vibe_coding/orbbec/new_train_data/mix3
 train: images/train
 val: images/val
 
 names:
   0:
-  1: milk
-  2: crisp
-  3: wawa
-  4: bottle
-  5: tissue
-  6: suitcase
-  7: projector
+  1: button
+  2: switch
+  3: capacitor
+  4: DDBC
+  5: FAN
+  6: KV_1
+  7: KV_5
+  8: RMW0

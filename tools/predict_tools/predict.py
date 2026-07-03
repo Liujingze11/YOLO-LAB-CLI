@@ -1,10 +1,15 @@
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 import json
 
+# ensure project root on sys.path when run from anywhere
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+
 from ultralytics import YOLO
 from config import PREDICT_DIR, BEST_SEG_MODEL, TEST_IMAGES_DIR
 
+_TOOLS_DIR = Path(__file__).resolve().parent
 
 # =========================
 # 只改这里：通用参数
@@ -19,7 +24,7 @@ class InferConfig:
     imgsz: int = 640
 
     # 外置任务参数文件
-    task_param_file: str = "infer_task_params.json"
+    task_param_file: str = str(_TOOLS_DIR / "infer_task_params.json")
 
     # 输出文件后缀
     out_suffix: str = "_overlay.jpg"
@@ -104,7 +109,7 @@ if __name__ == "__main__":
         save_dir=str(Path(PREDICT_DIR) / "seg_dataset_all_pro_random__aug_e150_b16_mask_overlay2"),
         conf=0.406,
         imgsz=640,
-        task_param_file="infer_task_params.json",
+        task_param_file=str(_TOOLS_DIR / "infer_task_params.json"),
         out_suffix="_overlay.jpg"
     )
 
