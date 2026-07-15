@@ -23,8 +23,11 @@ class TrainConfig:
     imgsz: int = 640
     batch: int = 16
     device: str = field(default_factory=get_default_device)
+    # lr0=0.0005：scratch训练，从yolov8n-seg.pt开始，640分辨率
     lr0: float = 0.0005
-    close_mosaic: int = 10
+    warmup_epochs: float = 3.0
+    lrf: float = 0.01
+    close_mosaic: int = 5
     multi_scale: float = 0.5
 
     experiment_name: str = "experiment"

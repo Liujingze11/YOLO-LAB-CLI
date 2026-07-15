@@ -182,8 +182,17 @@ def append_result_per_class_log(config, mode: str, class_rows: list, notes: str 
 # ── Metric extraction ───────────────────────────────────────
 
 
-def extract_seg_val_metrics(metrics, class_image_counts=None, class_instance_counts=None):
+def extract_seg_val_metrics(metrics, class_image_counts=None, class_instance_counts=None,
+                            classes_filter: list = None):
     """Extract summary and per-class metrics from Ultralytics model.val() result.
+
+    Args:
+        metrics: Ultralytics validation metrics object.
+        class_image_counts: dict class_name → image count.
+        class_instance_counts: dict class_name → instance count.
+        classes_filter: optional list of class IDs used in model.val(classes=...).
+            If provided, only these classes appear in per-class rows and class_result
+            indices are aligned correctly.
 
     Returns (summary_dict, per_class_rows_list).
     """
@@ -220,6 +229,14 @@ def extract_seg_val_metrics(metrics, class_image_counts=None, class_instance_cou
         if _is_valid_class(cname)
     ]
 
+    # Align class_result indices with the classes filter used in model.val()
+    if classes_filter is not None:
+        filter_set = set(classes_filter)
+        valid_classes = [(cid, cname) for cid, cname in valid_classes if cid in filter_set]
+        # Preserve the order of classes_filter (which matches Ultralytics internal order)
+        order_map = {cid: i for i, cid in enumerate(classes_filter)}
+        valid_classes.sort(key=lambda x: order_map.get(x[0], 999))
+
     for idx, (class_id, class_name) in enumerate(valid_classes):
         try:
             vals = metrics.class_result(idx)
@@ -246,12 +263,14 @@ def extract_seg_val_metrics(metrics, class_image_counts=None, class_instance_cou
 
 
 def append_full_val_log(config, mode: str, metrics, class_image_counts=None,
-                        class_instance_counts=None, notes: str = ""):
+                        class_instance_counts=None, notes: str = "",
+                        classes_filter: list = None):
     """Run validation logging: extract metrics, then append summary + per-class CSV rows."""
     summary, per_class_rows = extract_seg_val_metrics(
         metrics,
         class_image_counts=class_image_counts,
         class_instance_counts=class_instance_counts,
+        classes_filter=classes_filter,
     )
     append_result_summary_log(config, mode, summary, notes)
     append_result_per_class_log(config, mode, per_class_rows, notes)

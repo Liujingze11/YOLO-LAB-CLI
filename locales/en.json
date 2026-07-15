@@ -20,6 +20,14 @@
   "augment.current": "Current default: {status}",
   "augment.prompt": "Enable data augmentation? Enter y for ON, n for OFF, Enter for default: ",
 
+  "mixup.title": "Mixup Augmentation",
+  "mixup.status_on": "ON (mixup={value})",
+  "mixup.status_off": "OFF",
+  "mixup.current": "Current default: {status}",
+  "mixup.prompt": "Set Mixup augmentation. y=ON (default), n=OFF, or enter 0~1 value (e.g. 0.2), Enter for default: ",
+
+  "all_settings": "✓ All settings confirmed, starting training",
+
   "resume.not_found": "No resume weights found: {path}",
   "resume.fallback_prompt": "Start a new training instead? Enter y to continue, any other key to cancel: ",
   "resume.cancelled": "Cancelled.",

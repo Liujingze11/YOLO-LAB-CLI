@@ -20,6 +20,14 @@
   "augment.current": "当前默认值：{status}",
   "augment.prompt": "是否启用数据增强？输入 y 开启，n 关闭，直接回车使用默认值：",
 
+  "mixup.title": "Mixup 混合增强",
+  "mixup.status_on": "开启 (mixup={value})",
+  "mixup.status_off": "关闭",
+  "mixup.current": "当前默认值：{status}",
+  "mixup.prompt": "设置 Mixup 混合增强。y=开启默认值, n=关闭, 或输入 0~1 数值自定义（如 0.2），直接回车使用默认值：",
+
+  "all_settings": "✓ 所有设置已完成，开始训练",
+
   "resume.not_found": "没有找到上次中断训练的权重文件：{path}",
   "resume.fallback_prompt": "是否改为开启新的训练？输入 y 继续，其他任意键取消：",
   "resume.cancelled": "已取消操作。",

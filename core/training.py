@@ -15,7 +15,7 @@ def list_experiments(results_dir: str) -> list:
     )
 
 
-def build_train_kwargs(config, use_augment: bool) -> dict:
+def build_train_kwargs(config, use_augment: bool, classes: list = None) -> dict:
     kwargs = {
         "data": config.data_yaml,
         "epochs": config.epochs,
@@ -27,9 +27,16 @@ def build_train_kwargs(config, use_augment: bool) -> dict:
         "exist_ok": True,
         "plots": True,
         "lr0": config.lr0,
+        "warmup_epochs": getattr(config, "warmup_epochs", 3.0),
+        "lrf": getattr(config, "lrf", 0.01),
         "close_mosaic": config.close_mosaic,
         "multi_scale": config.multi_scale,
     }
+    # === 类别过滤：不修改原始标注文件，训练时过滤 + 自动重映射 ===
+    # classes 为旧 class ID 列表，Ultralytics 会自动过滤并重映射为 0,1,2,...
+    # 设为 None 则不过滤，使用标注文件中的全部类别
+    if classes is not None:
+        kwargs["classes"] = classes
     if use_augment:
         kwargs.update({
             "hsv_h": config.hsv_h, "hsv_s": config.hsv_s, "hsv_v": config.hsv_v,
@@ -37,8 +44,11 @@ def build_train_kwargs(config, use_augment: bool) -> dict:
             "scale": config.scale, "shear": config.shear,
             "perspective": config.perspective, "flipud": config.flipud,
             "fliplr": config.fliplr, "mosaic": config.mosaic,
-            "mixup": config.mixup, "copy_paste": config.copy_paste,
+            "copy_paste": config.copy_paste,
         })
+    # mixup 独立于 use_augment，由 ask_mixup 单独控制
+    if config.mixup > 0:
+        kwargs["mixup"] = config.mixup
     return kwargs
 
 
@@ -103,17 +113,20 @@ def count_val_label_stats(config) -> tuple:
     return class_image_counts, class_instance_counts
 
 
-def get_val_metrics(best_pt_path: str, config) -> object:
+def get_val_metrics(best_pt_path: str, config, classes: list = None) -> object:
     from ultralytics import YOLO
     model = YOLO(best_pt_path)
     val_name = f"{config.experiment_name}_tmp_val"
     val_dir = os.path.join(config.results_dir, val_name)
+    val_kwargs = {
+        "data": config.data_yaml, "imgsz": config.imgsz, "batch": config.batch,
+        "device": config.device, "plots": False, "save_txt": False, "save_json": False,
+        "visualize": False, "project": config.results_dir, "name": val_name,
+    }
+    if classes is not None:
+        val_kwargs["classes"] = classes
     try:
-        metrics = model.val(
-            data=config.data_yaml, imgsz=config.imgsz, batch=config.batch,
-            device=config.device, plots=False, save_txt=False, save_json=False,
-            visualize=False, project=config.results_dir, name=val_name,
-        )
+        metrics = model.val(**val_kwargs)
         return metrics
     finally:
         shutil.rmtree(val_dir, ignore_errors=True)

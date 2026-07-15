@@ -24,6 +24,13 @@ def set_locale(loc):
     global _loc
     _loc = loc
 
+# === 类别过滤：不修改原始标注txt文件，训练时自动过滤+重映射 ===
+# 保留的旧 class ID：1=button, 2=switch, 4=DDBC, 6=KV_1, 7=KV_5, 8=RMW0
+# 被忽略的类别：0=(空), 3=capacitor, 5=FAN
+# Ultralytics 自动将 [1,2,4,6,7,8] 重映射为模型内部索引 [0,1,2,3,4,5]
+# 如需恢复全部9类：删除此变量，将 data.yaml 改回原9类映射
+_CLASSES_FILTER = [1, 2, 4, 6, 7, 8]
+
 # ── 工具函数 ──────────────────────────────────────────────
 
 def ask_confirm_train(mode, pt_path, config):
@@ -58,6 +65,28 @@ def ask_use_augment(config):
         return config.use_augment
 
 
+def ask_mixup(config):
+    status = _t(_loc, "mixup.status_on", value=config.mixup) if config.mixup > 0 else _t(_loc, "mixup.status_off")
+    print(f"\n------------------------------")
+    print(_t(_loc, "mixup.title"))
+    print(_t(_loc, "mixup.current", status=status))
+    print("------------------------------")
+
+    choice = input(_t(_loc, "mixup.prompt")).strip()
+    if choice == "":
+        return config.mixup
+    low = choice.lower()
+    if low == "n":
+        return 0.0
+    if low == "y":
+        return config.mixup
+    try:
+        val = float(choice)
+        return max(0.0, min(1.0, val))
+    except ValueError:
+        return config.mixup
+
+
 # ── 验证 (i18n wrapper) ──────────────────────────────────
 
 def log_validation_result(config, mode, notes=""):
@@ -65,12 +94,13 @@ def log_validation_result(config, mode, notes=""):
         print(f"\n{_t(_loc, 'val.no_best_pt', path=config.best_pt)}")
         return
     try:
-        metrics = get_val_metrics(config.best_pt, config)
+        metrics = get_val_metrics(config.best_pt, config, classes=_CLASSES_FILTER)
         class_image_counts, class_instance_counts = count_val_label_stats(config)
         append_full_val_log(
             config=config, mode=mode, metrics=metrics,
             class_image_counts=class_image_counts,
             class_instance_counts=class_instance_counts, notes=notes,
+            classes_filter=_CLASSES_FILTER,
         )
         print(f"\n{_t(_loc, 'val.logged')}")
     except Exception as e:
@@ -85,17 +115,26 @@ def start_new_training(config):
         return
     use_augment = ask_use_augment(config)
     aug_label = _t(_loc, "augment.status_on") if use_augment else _t(_loc, "augment.status_off")
-    append_train_log(config, mode="new_train", status="started",
-                     notes=_t(_loc, "log.new_started", aug=aug_label))
+    mixup_value = ask_mixup(config)
+    mixup_label = _t(_loc, "mixup.status_on", value=mixup_value) if mixup_value > 0 else _t(_loc, "mixup.status_off")
+    original_mixup = config.mixup
+    config.mixup = mixup_value
+
+    print(f"\n>>> {_t(_loc, 'all_settings')}: epochs={config.epochs}, imgsz={config.imgsz}, batch={config.batch}, lr={config.lr0}, mixup={mixup_value}, aug={aug_label}")
+
+    notes = _t(_loc, "log.new_started", aug=aug_label) + f", mixup={mixup_label}"
+    append_train_log(config, mode="new_train", status="started", notes=notes)
 
     try:
         model = YOLO(config.model_file)
-        train_kwargs = build_train_kwargs(config, use_augment)
+        train_kwargs = build_train_kwargs(config, use_augment, _CLASSES_FILTER)
         model.train(**train_kwargs)
+        config.mixup = original_mixup
         append_train_log(config, mode="new_train", status="finished",
                          notes=_t(_loc, "log.new_finished", aug=aug_label))
         log_validation_result(config, mode="new_train", notes=_t(_loc, "log.new_val"))
     except Exception as e:
+        config.mixup = original_mixup
         if os.path.exists(config.best_pt):
             append_train_log(config, mode="new_train", status="finished",
                              notes=_t(_loc, "log.val_retry", err=e))
@@ -130,7 +169,7 @@ def resume_training(config):
                      notes=_t(_loc, "log.resume_started"))
     try:
         model = YOLO(config.last_pt)
-        model.train(resume=True)
+        model.train(resume=True, project=config.results_dir, name=config.experiment_name, exist_ok=True)
         append_train_log(config, mode="resume_train", status="finished",
                          notes=_t(_loc, "log.resume_finished"))
         log_validation_result(config, mode="resume_train", notes=_t(_loc, "log.resume_val"))
@@ -174,18 +213,26 @@ def train_from_previous_best(config):
 
     use_augment = ask_use_augment(config)
     aug_label = _t(_loc, "augment.status_on") if use_augment else _t(_loc, "augment.status_off")
+    mixup_value = ask_mixup(config)
+    mixup_label = _t(_loc, "mixup.status_on", value=mixup_value) if mixup_value > 0 else _t(_loc, "mixup.status_off")
+    original_mixup = config.mixup
+    config.mixup = mixup_value
 
-    append_train_log(config, mode="train_from_best", status="started",
-                     notes=_t(_loc, "log.finetune_started", exp=selected_exp, aug=aug_label))
+    print(f"\n>>> {_t(_loc, 'all_settings')}: epochs={config.epochs}, imgsz={config.imgsz}, batch={config.batch}, lr={config.lr0}, mixup={mixup_value}, aug={aug_label}")
+
+    notes = _t(_loc, "log.finetune_started", exp=selected_exp, aug=aug_label) + f", mixup={mixup_label}"
+    append_train_log(config, mode="train_from_best", status="started", notes=notes)
     try:
         model = YOLO(selected_best_pt)
-        train_kwargs = build_train_kwargs(config, use_augment)
+        train_kwargs = build_train_kwargs(config, use_augment, _CLASSES_FILTER)
         model.train(**train_kwargs)
+        config.mixup = original_mixup
         append_train_log(config, mode="train_from_best", status="finished",
                          notes=_t(_loc, "log.finetune_finished", exp=selected_exp, aug=aug_label))
         log_validation_result(config, mode="train_from_best",
                               notes=_t(_loc, "log.finetune_val", exp=selected_exp))
     except Exception as e:
+        config.mixup = original_mixup
         if os.path.exists(config.best_pt):
             append_train_log(config, mode="train_from_best", status="finished",
                              notes=_t(_loc, "log.val_retry", err=e))

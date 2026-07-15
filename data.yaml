@@ -1,7 +1,11 @@
-path: /home/ljz/vibe_coding/orbbec/new_train_data/mix3
+path: /path/to/your/dataset
 train: images/train
 val: images/val
+test: images/test
 
+# === data.yaml 必须包含 txt 标注中所有出现的 class ID，否则 CUDA 越界 ===
+# 训练时通过 train.py 的 _CLASSES_FILTER = [1,2,4,6,7,8] 过滤掉 capacitor(3) 和 FAN(5)
+# 如需恢复全部9类训练：删除 train.py 中的 _CLASSES_FILTER 变量
 names:
   0:
   1: button
