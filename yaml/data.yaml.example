@@ -1,0 +1,13 @@
+# Example dataset configuration
+# Copy this file and modify paths/names for your own dataset.
+# Place your YAML files in the yaml/ directory.
+
+path: ./data/datasets
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: background
+  1: class_a
+  2: class_b

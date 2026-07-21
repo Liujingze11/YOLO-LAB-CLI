@@ -6,7 +6,7 @@ import argparse
 from pathlib import Path
 
 from config import TrainConfig, DATA_YAML, MODEL_FILE, RESULTS_DIR, LOG_DIR
-from train import set_locale, start_new_training, resume_training, train_from_previous_best
+from work_flows import set_locale, start_new_training, resume_training, train_from_previous_best
 from core.i18n import t as _t, load_locale
 
 # ── i18n ──────────────────────────────────────────────────

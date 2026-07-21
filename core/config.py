@@ -19,18 +19,20 @@ class TrainConfig:
     log_dir: str = ""
 
     # === hyperparameters ===
-    epochs: int = 150
+    epochs: int = 200
     imgsz: int = 640
     batch: int = 16
     device: str = field(default_factory=get_default_device)
-    # lr0=0.0005：scratch训练，从yolov8n-seg.pt开始，640分辨率
-    lr0: float = 0.0005
-    warmup_epochs: float = 3.0
+    # freeze=10 + cos_lr：冻结 backbone 只训 head，快速适应新环境
+    lr0: float = 5e-4
+    warmup_epochs: float = 5.0
     lrf: float = 0.01
     close_mosaic: int = 5
     multi_scale: float = 0.5
+    freeze: int = 0
+    cos_lr: bool = True
 
-    experiment_name: str = "experiment"
+    experiment_name: str = "3cls_mix7_close_scratch_e200_lr5e-4_b16_imgsz640_cm5_mx02"
 
     # === data augmentation ===
     use_augment: bool = True
@@ -45,7 +47,7 @@ class TrainConfig:
     flipud: float = 0.0
     fliplr: float = 0.5
     mosaic: float = 1.0
-    mixup: float = 0.0
+    mixup: float = 0.2
     copy_paste: float = 0.0
 
     @property

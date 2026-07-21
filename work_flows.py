@@ -29,7 +29,7 @@ def set_locale(loc):
 # 被忽略的类别：0=(空), 3=capacitor, 5=FAN
 # Ultralytics 自动将 [1,2,4,6,7,8] 重映射为模型内部索引 [0,1,2,3,4,5]
 # 如需恢复全部9类：删除此变量，将 data.yaml 改回原9类映射
-_CLASSES_FILTER = [1, 2, 4, 6, 7, 8]
+_CLASSES_FILTER = [1, 2, 3]  # mix7_cls3: button, switch, DDBC
 
 # ── 工具函数 ──────────────────────────────────────────────
 

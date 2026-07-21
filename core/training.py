@@ -31,7 +31,10 @@ def build_train_kwargs(config, use_augment: bool, classes: list = None) -> dict:
         "lrf": getattr(config, "lrf", 0.01),
         "close_mosaic": config.close_mosaic,
         "multi_scale": config.multi_scale,
+        "cos_lr": config.cos_lr,
     }
+    if getattr(config, "freeze", 0) > 0:
+        kwargs["freeze"] = config.freeze
     # === 类别过滤：不修改原始标注文件，训练时过滤 + 自动重映射 ===
     # classes 为旧 class ID 列表，Ultralytics 会自动过滤并重映射为 0,1,2,...
     # 设为 None 则不过滤，使用标注文件中的全部类别

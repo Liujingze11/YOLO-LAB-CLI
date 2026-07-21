@@ -36,9 +36,10 @@ pip install ultralytics pyyaml
 ```
 YOLO-LAB-CLI/
 ├── main.py                 # CLI entry point (i18n, arg parsing, mode menu)
-├── train.py                # Training flows (new / resume / fine-tune)
+├── work_flows.py                # Training flows (new / resume / fine-tune)
 ├── config.py               # Path defaults + core re-exports
-├── data.yaml               # Dataset configuration
+├── yaml/                   # Dataset configuration files
+│   └── data.yaml.example   # Example dataset config
 ├── core/                   # Shared library (identical across CLI/GUI/LAB)
 │   ├── config.py           # TrainConfig dataclass
 │   ├── training.py         # Training utilities
@@ -79,15 +80,19 @@ python main.py --lang es   # Español
 python main.py --lang zh   # 中文
 ```
 
-## data.yaml Format
+## Dataset Config Format
+
+Place your dataset YAML files in the `yaml/` directory. See `yaml/data.yaml.example`:
 
 ```yaml
 path: ./data/datasets
 train: images/train
 val: images/val
+test: images/test
 names:
-  0: class_a
-  1: class_b
+  0: background
+  1: class_a
+  2: class_b
 ```
 
 ## Outputs

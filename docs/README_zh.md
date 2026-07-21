@@ -36,9 +36,10 @@ pip install ultralytics pyyaml
 ```
 YOLO-LAB-CLI/
 ├── main.py                 # CLI 入口（国际化、参数解析、模式菜单）
-├── train.py                # 训练流程（新训练 / 续训 / 微调）
+├── work_flows.py                # 训练流程（新训练 / 续训 / 微调）
 ├── config.py               # 路径默认值 + core 重导出
-├── data.yaml               # 数据集配置
+├── yaml/                   # 数据集配置文件
+│   └── data.yaml.example   # 示例数据集配置
 ├── core/                   # 共享库（CLI/GUI/LAB 完全一致）
 │   ├── config.py           # TrainConfig 数据类
 │   ├── training.py         # 训练工具函数
@@ -79,15 +80,19 @@ python main.py --lang fr   # Français
 python main.py --lang es   # Español
 ```
 
-## data.yaml 格式
+## 数据集配置格式
+
+将数据集 YAML 文件放入 `yaml/` 目录。参考 `yaml/data.yaml.example`：
 
 ```yaml
 path: ./data/datasets
 train: images/train
 val: images/val
+test: images/test
 names:
-  0: class_a
-  1: class_b
+  0: background
+  1: class_a
+  2: class_b
 ```
 
 ## 输出

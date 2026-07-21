@@ -31,6 +31,32 @@ python main.py
 pip install ultralytics pyyaml
 ```
 
+## Estructura del Proyecto
+
+```
+YOLO-LAB-CLI/
+├── main.py                 # Punto de entrada CLI (i18n, análisis de argumentos, menú)
+├── work_flows.py                # Flujos de entrenamiento (nuevo / reanudar / ajustar)
+├── config.py               # Rutas predeterminadas + reexportaciones core
+├── yaml/                   # Archivos de configuración de datasets
+│   └── data.yaml.example   # Ejemplo de configuración
+├── core/                   # Biblioteca compartida (idéntica CLI/GUI/LAB)
+│   ├── config.py           # Clase de datos TrainConfig
+│   ├── training.py         # Utilidades de entrenamiento
+│   ├── train_logger.py     # Registro CSV
+│   ├── device.py           # Detección de GPU
+│   ├── i18n.py             # Ayuda i18n
+│   └── paths.py            # Registro de modelos
+├── tools/                  # Scripts de utilidad
+│   ├── predict_tools/      # Inferencia (predict.py + parámetros de tarea)
+│   └── dataset_tools/      # División de datasets y herramientas de etiquetas
+├── outputs/                # Salidas de entrenamiento (git-ignorado)
+│   ├── result/             # Pesos de modelos y gráficos
+│   └── logs/               # Registros CSV de entrenamiento
+├── locales/                # Archivos de traducción i18n
+└── pretrained_models/      # Pesos de modelos pre-entrenados
+```
+
 ## Modos de Entrenamiento
 
 Ejecute `python main.py` y elija:
@@ -52,6 +78,21 @@ python main.py --lang es   # Español
 python main.py --lang en   # English
 python main.py --lang fr   # Français
 python main.py --lang zh   # 中文
+```
+
+## Formato de Configuración de Datos
+
+Coloque sus archivos YAML de configuración en el directorio `yaml/`. Ver `yaml/data.yaml.example`:
+
+```yaml
+path: ./data/datasets
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: background
+  1: class_a
+  2: class_b
 ```
 
 ## Resultados

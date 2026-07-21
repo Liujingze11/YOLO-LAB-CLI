@@ -31,6 +31,10 @@ labels/
 .DS_Store
 Thumbs.db
 
+# Dataset configs (keep only yaml/data.yaml.example)
+yaml/data*.yaml
+!yaml/data.yaml.example
+
 # IDE
 .vscode/
 .idea/
