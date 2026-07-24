@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Re-validate all mix5 experiments with correct class filter."""
 import sys
-sys.path.insert(0, "/home/ljz/vibe_coding/YOLO/YOLO-LAB-CLI")
+from pathlib import Path
 
-from config import DATA_YAML, LOG_DIR, RESULTS_DIR
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from cli_config import DATA_YAML, LOG_DIR, RESULTS_DIR
 from core.train_logger import append_full_val_log
 from core.training import get_val_metrics, count_val_label_stats
 
