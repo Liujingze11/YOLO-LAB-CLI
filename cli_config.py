@@ -1,7 +1,7 @@
-"""CLI-specific path defaults — re-exports unified TrainConfig from core."""
+"""CLI path defaults and TrainConfig re-exports."""
 from pathlib import Path
 
-from core.config import TrainConfig, load_user_config, save_user_config, merge_config, load_effective_config  # noqa: F401
+from core.train_config import TrainConfig, load_user_config, save_user_config, merge_config, load_effective_config  # noqa: F401
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 

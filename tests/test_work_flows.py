@@ -13,12 +13,12 @@ if "ultralytics" not in sys.modules:
     ultralytics.YOLO = object
     sys.modules["ultralytics"] = ultralytics
 
-work_flows = importlib.import_module("work_flows")
+training_flows = importlib.import_module("training_flows")
 
 
 class TrainFlowConfirmationTests(unittest.TestCase):
     def setUp(self):
-        work_flows.set_locale(
+        training_flows.set_locale(
             {
                 "confirm.title": "About to execute: {mode}",
                 "confirm.pt_file": "PT: {path}",
@@ -38,7 +38,7 @@ class TrainFlowConfirmationTests(unittest.TestCase):
         )
 
         with patch("builtins.input", return_value="n"):
-            confirmed = work_flows.ask_confirm_train("new", "model.pt", config)
+            confirmed = training_flows.ask_confirm_train("new", "model.pt", config)
 
         self.assertFalse(confirmed)
 
@@ -50,7 +50,7 @@ class TrainFlowConfirmationTests(unittest.TestCase):
         )
 
         with patch("builtins.input", return_value="y"):
-            confirmed = work_flows.ask_confirm_train("new", "model.pt", config)
+            confirmed = training_flows.ask_confirm_train("new", "model.pt", config)
 
         self.assertTrue(confirmed)
 
@@ -67,7 +67,7 @@ class TrainFlowConfirmationTests(unittest.TestCase):
                 last_pt=str(exp_dir / "last.pt"),
                 best_pt=str(exp_dir / "best.pt"),
             )
-            work_flows.set_locale(
+            training_flows.set_locale(
                 {
                     "train.resume_mode_label": "Resume training",
                     "log.resume_started": "start",
@@ -77,10 +77,10 @@ class TrainFlowConfirmationTests(unittest.TestCase):
             )
 
             with (
-                patch.object(work_flows, "_run_confirmation_flow", return_value=(False, False, 0.0)) as confirm,
-                patch.object(work_flows, "YOLO"),
+                patch.object(training_flows, "_run_confirmation_flow", return_value=(False, False, 0.0)) as confirm,
+                patch.object(training_flows, "YOLO"),
             ):
-                work_flows.resume_training(config)
+                training_flows.resume_training(config)
 
         confirm.assert_called_once()
         self.assertEqual(confirm.call_args.args[2], "Resume training")

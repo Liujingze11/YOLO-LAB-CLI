@@ -1,4 +1,4 @@
-"""Unified TrainConfig dataclass + user config file management.
+"""Training configuration dataclass and user config persistence.
 
 Shared across YOLO-LAB-CLI, YOLO-LAB-GUI, and YOLO-LAB.
 """

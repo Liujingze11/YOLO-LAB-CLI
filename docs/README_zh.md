@@ -36,12 +36,12 @@ pip install ultralytics pyyaml
 ```
 YOLO-LAB-CLI/
 ├── main.py                 # CLI 入口（国际化、参数解析、模式菜单）
-├── work_flows.py                # 训练流程（新训练 / 续训 / 微调）
-├── config.py               # 路径默认值 + core 重导出
+├── training_flows.py       # 训练流程（新训练 / 续训 / 微调）
+├── cli_config.py           # CLI 路径默认值 + TrainConfig 重导出
 ├── yaml/                   # 数据集配置文件
 │   └── data.yaml.example   # 示例数据集配置
 ├── core/                   # 共享库（CLI/GUI/LAB 完全一致）
-│   ├── config.py           # TrainConfig 数据类
+│   ├── train_config.py     # TrainConfig 数据类 + 用户配置持久化
 │   ├── training.py         # 训练工具函数
 │   ├── train_logger.py     # CSV 日志
 │   ├── device.py           # GPU 检测

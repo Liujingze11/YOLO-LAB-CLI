@@ -36,12 +36,12 @@ pip install ultralytics pyyaml
 ```
 YOLO-LAB-CLI/
 ├── main.py                 # Punto de entrada CLI (i18n, análisis de argumentos, menú)
-├── work_flows.py                # Flujos de entrenamiento (nuevo / reanudar / ajustar)
-├── config.py               # Rutas predeterminadas + reexportaciones core
+├── training_flows.py       # Flujos de entrenamiento (nuevo / reanudar / ajustar)
+├── cli_config.py           # Rutas CLI predeterminadas + reexportaciones TrainConfig
 ├── yaml/                   # Archivos de configuración de datasets
 │   └── data.yaml.example   # Ejemplo de configuración
 ├── core/                   # Biblioteca compartida (idéntica CLI/GUI/LAB)
-│   ├── config.py           # Clase de datos TrainConfig
+│   ├── train_config.py     # Clase TrainConfig + persistencia de configuración
 │   ├── training.py         # Utilidades de entrenamiento
 │   ├── train_logger.py     # Registro CSV
 │   ├── device.py           # Detección de GPU

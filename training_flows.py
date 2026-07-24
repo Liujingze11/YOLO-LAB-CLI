@@ -3,7 +3,7 @@ import yaml
 os.environ["MPLBACKEND"] = "Agg"
 
 from ultralytics import YOLO
-from config import TrainConfig
+from core.train_config import TrainConfig
 from core.train_logger import append_train_log, append_full_val_log
 from core.training import (
     build_train_kwargs,
