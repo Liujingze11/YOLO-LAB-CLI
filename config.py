@@ -11,7 +11,5 @@ RESULTS_DIR = str(PROJECT_ROOT / "outputs" / "result")
 LOG_DIR = str(PROJECT_ROOT / "outputs" / "logs")
 
 PREDICT_DIR = str(PROJECT_ROOT / "predict")
-# BEST_SEG_MODEL = str(PROJECT_ROOT / "outputs" / "result" / "<your_experiment>" / "weights" / "best.pt")
-# TEST_IMAGES_DIR = str(PROJECT_ROOT / "data" / "<your_dataset>" / "images" / "test")
-BEST_SEG_MODEL = ""
-TEST_IMAGES_DIR = ""
+BEST_SEG_MODEL = str(PROJECT_ROOT / "outputs" / "result" / "<your_experiment>" / "weights" / "best.pt")
+TEST_IMAGES_DIR = str(PROJECT_ROOT / "data" / "<your_dataset>" / "images" / "test")

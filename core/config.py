@@ -31,6 +31,7 @@ class TrainConfig:
     multi_scale: float = 0.5
     freeze: int = 0
     cos_lr: bool = True
+    lr_scheduler: str = "cosine"  # "adaptive" | "restart" | "cosine"
 
     experiment_name: str = "3cls_mix7_close_scratch_e200_lr5e-4_b16_imgsz640_cm5_mx02"
 
