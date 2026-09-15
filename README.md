@@ -7,7 +7,10 @@ Command-line YOLO segmentation training tool built on Ultralytics.
 ## Features
 
 - Three training modes: New / Resume / Fine-tune
-- Toggleable data augmentation
+- Step-by-step confirmation flow: dataset YAML → hyperparameters → augmentation → Mixup → save-all-epochs
+- Toggleable data augmentation (mosaic, mixup, copy-paste, random erasing, flips, HSV ...)
+- Freeze backbone, cosine LR, pluggable LR schedulers (adaptive / restart / cosine)
+- Optional "save all epoch weights", organized under `weights/epochs/`
 - Automatic validation with CSV logging (overall + per-class metrics)
 - Experiment isolation: each run creates independent result directories and logs
 - CLI parameter overrides (`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`)
@@ -25,10 +28,10 @@ python main.py
 ## Requirements
 
 - Python 3.8+
-- ultralytics, PyYAML
+- ultralytics, PyYAML, numpy
 
 ```bash
-pip install ultralytics pyyaml
+pip install ultralytics pyyaml numpy
 ```
 
 ## Project Structure
@@ -44,12 +47,16 @@ YOLO-LAB-CLI/
 │   ├── train_config.py     # TrainConfig dataclass + user config persistence
 │   ├── training.py         # Training utilities
 │   ├── train_logger.py     # CSV logging
+│   ├── lr_schedulers.py    # LR scheduler callbacks
 │   ├── device.py           # GPU detection
 │   ├── i18n.py             # i18n helpers
 │   └── paths.py            # Model registry
+├── scripts/                # Inference & revalidation helper scripts
 ├── tools/                  # Utility scripts
 │   ├── predict_tools/      # Inference (predict.py + task params)
 │   └── dataset_tools/      # Dataset splitting & label utilities
+├── tests/                  # pytest test suite
+├── docs/                   # Translated READMEs (zh / fr / es)
 ├── outputs/                # Training outputs (git-ignored)
 │   ├── result/             # Model weights & plots
 │   └── logs/               # CSV training logs
@@ -64,6 +71,8 @@ Run `python main.py` and choose:
 - **1** — New training from initial weights
 - **2** — Resume from last.pt
 - **3** — Fine-tune from historical best.pt
+
+Every mode walks through a confirmation flow — dataset YAML → hyperparameters → data augmentation → Mixup value → save-all-epochs — so you can review and adjust each setting before training starts.
 
 ## CLI Options
 
@@ -98,6 +107,7 @@ names:
 ## Outputs
 
 - Weights & plots: `outputs/result/<experiment_name>/`
+- Epoch weights (optional): `outputs/result/<experiment_name>/weights/epochs/`
 - CSV logs: `outputs/logs/`
 
 ## License

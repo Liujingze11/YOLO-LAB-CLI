@@ -7,7 +7,10 @@ Outil de formation en ligne de commande pour la segmentation YOLO, basé sur Ult
 ## Fonctionnalités
 
 - Trois modes d'entraînement : Nouveau / Reprendre / Ajuster
-- Augmentation de données activable
+- Flux de confirmation étape par étape : YAML du jeu de données → hyperparamètres → augmentation → Mixup → sauvegarde de tous les poids d'époques
+- Augmentation de données activable (mosaic, mixup, copy-paste, effacement aléatoire, retournements, HSV ...)
+- Gel du backbone, LR cosinus, ordonnanceurs de LR interchangeables (adaptive / restart / cosine)
+- Option « sauvegarder tous les poids d'époques », organisés sous `weights/epochs/`
 - Validation automatique avec journalisation CSV (métriques globales et par classe)
 - Isolation des expériences : chaque exécution crée des répertoires et journaux indépendants
 - Paramètres CLI (`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`)
@@ -25,10 +28,10 @@ python main.py
 ## Prérequis
 
 - Python 3.8+
-- ultralytics, PyYAML
+- ultralytics, PyYAML, numpy
 
 ```bash
-pip install ultralytics pyyaml
+pip install ultralytics pyyaml numpy
 ```
 
 ## Structure du Projet
@@ -44,12 +47,16 @@ YOLO-LAB-CLI/
 │   ├── train_config.py     # Classe TrainConfig + persistance de configuration
 │   ├── training.py         # Utilitaires d'entraînement
 │   ├── train_logger.py     # Journalisation CSV
+│   ├── lr_schedulers.py    # Callbacks d'ordonnanceurs de LR
 │   ├── device.py           # Détection GPU
 │   ├── i18n.py             # Aide à l'i18n
 │   └── paths.py            # Registre des modèles
+├── scripts/                # Scripts d'inférence et de revalidation
 ├── tools/                  # Scripts utilitaires
 │   ├── predict_tools/      # Inférence (predict.py + paramètres de tâche)
 │   └── dataset_tools/      # Division des jeux de données & outils d'étiquettes
+├── tests/                  # Suite de tests pytest
+├── docs/                   # README traduits (zh / fr / es)
 ├── outputs/                # Résultats d'entraînement (git-ignoré)
 │   ├── result/             # Poids des modèles et graphiques
 │   └── logs/               # Journaux d'entraînement CSV
@@ -64,6 +71,8 @@ Lancez `python main.py` et choisissez :
 - **1** — Nouvel entraînement depuis les poids initiaux
 - **2** — Reprendre depuis last.pt
 - **3** — Ajuster depuis le best.pt historique
+
+Chaque mode passe par un flux de confirmation — YAML du jeu de données → hyperparamètres → augmentation de données → valeur de Mixup → sauvegarde de tous les poids d'époques — afin de vérifier et ajuster chaque réglage avant de lancer l'entraînement.
 
 ## Options CLI
 
@@ -98,6 +107,7 @@ names:
 ## Résultats
 
 - Poids et graphiques : `outputs/result/<experiment_name>/`
+- Poids par époque (optionnel) : `outputs/result/<experiment_name>/weights/epochs/`
 - Journaux CSV : `outputs/logs/`
 
 ## License

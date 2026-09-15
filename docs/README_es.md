@@ -7,7 +7,10 @@ Herramienta de línea de comandos para entrenamiento de segmentación YOLO, basa
 ## Funcionalidades
 
 - Tres modos de entrenamiento: Nuevo / Reanudar / Ajustar
-- Aumento de datos activable
+- Flujo de confirmación paso a paso: YAML del dataset → hiperparámetros → aumento → Mixup → guardar todos los pesos de épocas
+- Aumento de datos activable (mosaic, mixup, copy-paste, borrado aleatorio, volteos, HSV ...)
+- Congelar backbone, LR coseno, planificadores de LR intercambiables (adaptive / restart / cosine)
+- Opción «guardar todos los pesos de épocas», organizados en `weights/epochs/`
 - Validación automática con registro CSV (métricas globales y por clase)
 - Aislamiento de experimentos: cada ejecución crea directorios y registros independientes
 - Parámetros CLI (`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`)
@@ -25,10 +28,10 @@ python main.py
 ## Requisitos
 
 - Python 3.8+
-- ultralytics, PyYAML
+- ultralytics, PyYAML, numpy
 
 ```bash
-pip install ultralytics pyyaml
+pip install ultralytics pyyaml numpy
 ```
 
 ## Estructura del Proyecto
@@ -44,12 +47,16 @@ YOLO-LAB-CLI/
 │   ├── train_config.py     # Clase TrainConfig + persistencia de configuración
 │   ├── training.py         # Utilidades de entrenamiento
 │   ├── train_logger.py     # Registro CSV
+│   ├── lr_schedulers.py    # Callbacks de planificadores de LR
 │   ├── device.py           # Detección de GPU
 │   ├── i18n.py             # Ayuda i18n
 │   └── paths.py            # Registro de modelos
+├── scripts/                # Scripts de inferencia y revalidación
 ├── tools/                  # Scripts de utilidad
 │   ├── predict_tools/      # Inferencia (predict.py + parámetros de tarea)
 │   └── dataset_tools/      # División de datasets y herramientas de etiquetas
+├── tests/                  # Suite de pruebas pytest
+├── docs/                   # README traducidos (zh / fr / es)
 ├── outputs/                # Salidas de entrenamiento (git-ignorado)
 │   ├── result/             # Pesos de modelos y gráficos
 │   └── logs/               # Registros CSV de entrenamiento
@@ -64,6 +71,8 @@ Ejecute `python main.py` y elija:
 - **1** — Nuevo entrenamiento desde pesos iniciales
 - **2** — Reanudar desde last.pt
 - **3** — Ajustar desde best.pt histórico
+
+Cada modo pasa por un flujo de confirmación — YAML del dataset → hiperparámetros → aumento de datos → valor de Mixup → guardar todos los pesos de épocas — para revisar y ajustar cada configuración antes de comenzar el entrenamiento.
 
 ## Opciones CLI
 
@@ -98,6 +107,7 @@ names:
 ## Resultados
 
 - Pesos y gráficos: `outputs/result/<experiment_name>/`
+- Pesos por época (opcional): `outputs/result/<experiment_name>/weights/epochs/`
 - Registros CSV: `outputs/logs/`
 
 ## Licencia
