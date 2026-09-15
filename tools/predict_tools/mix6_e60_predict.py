@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""e60 模型推理脚本 — 输出标签 txt 到指定目录"""
+"""e60 模型推理脚本 — 输出标签 txt 到桌面"""
 
 from ultralytics import YOLO
 import argparse
@@ -19,4 +19,4 @@ results = model.predict(
     exist_ok=True, device='0',
     verbose=True,
 )
-print(f"Done: {len(results)} images -> <output_project_dir>/{args.name}")
+print(f"Done: {len(results)} images → <output_project_dir>/{args.name}")

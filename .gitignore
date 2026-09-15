@@ -12,6 +12,7 @@ venv/
 # Training outputs
 runs/
 outputs/
+outputs*/
 logs/
 
 # Model weights

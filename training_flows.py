@@ -1,8 +1,10 @@
 import os
 import yaml
+import numpy as np
 os.environ["MPLBACKEND"] = "Agg"
 
 from ultralytics import YOLO
+from ultralytics.utils.metrics import Metric
 from core.train_config import TrainConfig
 from core.train_logger import append_train_log, append_full_val_log
 from core.training import (
@@ -13,6 +15,7 @@ from core.training import (
     get_val_labels_dir,
     count_val_label_stats,
     get_val_metrics,
+    organize_epoch_weights,
 )
 from core.lr_schedulers import build_lr_callback
 from core.i18n import t as _t
@@ -27,7 +30,7 @@ def set_locale(loc):
     _loc = loc
 
 # === 类别过滤：不修改原始标注txt文件，训练时自动过滤+重映射 ===
-_CLASSES_FILTER = [1, 2, 3]  # mix7_cls3: button, switch, DDBC
+_CLASSES_FILTER = [1]  # o1_split: 单类别 object（分割）
 
 # ── 确认流程（分步：YAML → 超参数 → 增强 → mixup）──────────
 
@@ -150,6 +153,7 @@ def confirm_augment_params(config: TrainConfig) -> bool:
     print(f"  {_t(_loc, 'aug_params.fliplr')}: {config.fliplr}")
     print(f"  {_t(_loc, 'aug_params.mosaic')}: {config.mosaic}")
     print(f"  {_t(_loc, 'aug_params.copy_paste')}: {config.copy_paste}")
+    print(f"  {_t(_loc, 'aug_params.erasing')}: {getattr(config, 'erasing', 0.0)}")
     print(f"{'='*55}")
 
     return _confirm(_t(_loc, "aug_params.prompt")) is True
@@ -234,9 +238,14 @@ def _run_confirmation_flow(config: TrainConfig, pt_path: str, mode_label: str, i
     # Step 5: mixup
     mixup_value = ask_mixup(config)
     if mixup_value is None:
-        return False, False, 0.0
+        return False, False, 0.0, False
 
-    return True, use_augment, mixup_value
+    # Step 6: save_all_epochs
+    save_all = ask_save_all_epochs(config)
+    if save_all is None:
+        return False, False, 0.0, False
+
+    return True, use_augment, mixup_value, save_all
 
 
 def ask_use_augment(config):
@@ -286,6 +295,27 @@ def ask_mixup(config):
             pass  # 无效输入，重新提示
 
 
+def ask_save_all_epochs(config):
+    """Step: 是否保存所有 epoch 的权重文件。y=是, Enter=否, q=退出。"""
+    status = _t(_loc, "save_all_epochs.status_on") if config.save_all_epochs else _t(_loc, "save_all_epochs.status_off")
+    print(f"\n------------------------------")
+    print(_t(_loc, "save_all_epochs.title"))
+    print(_t(_loc, "save_all_epochs.current", status=status))
+    print(_t(_loc, "save_all_epochs.size_hint"))
+    print("------------------------------")
+
+    while True:
+        choice = input(_t(_loc, "save_all_epochs.prompt")).strip().lower()
+        if choice == "q":
+            print(f"\n{_t(_loc, 'confirm.quit')}")
+            return None
+        if choice in ("", "n"):
+            return False
+        if choice == "y":
+            return True
+        # 其他按键忽略
+
+
 # ── 验证 (i18n wrapper) ──────────────────────────────────
 
 def log_validation_result(config, mode, notes=""):
@@ -311,7 +341,7 @@ def log_validation_result(config, mode, notes=""):
 def start_new_training(config):
     mode_label = _t(_loc, "train.new_mode_label")
 
-    confirmed, use_augment, mixup_value = _run_confirmation_flow(
+    confirmed, use_augment, mixup_value, save_all = _run_confirmation_flow(
         config, config.model_file, mode_label, is_resume=False,
     )
     if not confirmed:
@@ -319,6 +349,7 @@ def start_new_training(config):
 
     original_mixup = config.mixup
     config.mixup = mixup_value
+    config.save_all_epochs = save_all
     aug_label = _t(_loc, "augment.status_on") if use_augment else _t(_loc, "augment.status_off")
     mixup_label = _t(_loc, "mixup.status_on", value=mixup_value) if mixup_value > 0 else _t(_loc, "mixup.status_off")
 
@@ -337,6 +368,8 @@ def start_new_training(config):
         train_kwargs = build_train_kwargs(config, use_augment, _CLASSES_FILTER)
         model.train(**train_kwargs)
         config.mixup = original_mixup
+        if save_all:
+            organize_epoch_weights(config)
         append_train_log(config, mode="new_train", status="finished",
                          notes=_t(_loc, "log.new_finished", aug=aug_label))
         log_validation_result(config, mode="new_train", notes=_t(_loc, "log.new_val"))
@@ -366,7 +399,7 @@ def resume_training(config):
         return
 
     mode_label = _t(_loc, "train.resume_mode_label")
-    confirmed, _, _ = _run_confirmation_flow(
+    confirmed, _, _, _ = _run_confirmation_flow(
         config, config.last_pt, mode_label, is_resume=True,
     )
     if not confirmed:
@@ -416,7 +449,7 @@ def train_from_previous_best(config):
 
     mode_label = _t(_loc, "train.finetune_mode_label")
 
-    confirmed, use_augment, mixup_value = _run_confirmation_flow(
+    confirmed, use_augment, mixup_value, save_all = _run_confirmation_flow(
         config, selected_best_pt, mode_label, is_resume=False,
     )
     if not confirmed:
@@ -426,6 +459,7 @@ def train_from_previous_best(config):
     mixup_label = _t(_loc, "mixup.status_on", value=mixup_value) if mixup_value > 0 else _t(_loc, "mixup.status_off")
     original_mixup = config.mixup
     config.mixup = mixup_value
+    config.save_all_epochs = save_all
 
     # 构建 LR scheduler callback
     config._lr_callback = build_lr_callback(config.lr_scheduler, lr0=config.lr0)
@@ -441,6 +475,8 @@ def train_from_previous_best(config):
         train_kwargs = build_train_kwargs(config, use_augment, _CLASSES_FILTER)
         model.train(**train_kwargs)
         config.mixup = original_mixup
+        if save_all:
+            organize_epoch_weights(config)
         append_train_log(config, mode="train_from_best", status="finished",
                          notes=_t(_loc, "log.finetune_finished", exp=selected_exp, aug=aug_label))
         log_validation_result(config, mode="train_from_best",

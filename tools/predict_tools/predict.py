@@ -106,7 +106,7 @@ if __name__ == "__main__":
     cfg = InferConfig(
         model_path=BEST_SEG_MODEL,
         source=TEST_IMAGES_DIR,
-        save_dir=str(Path(PREDICT_DIR) / "predict_result"),
+        save_dir=str(Path(PREDICT_DIR) / "seg_dataset_all_pro_random__aug_e150_b16_mask_overlay2"),
         conf=0.406,
         imgsz=640,
         task_param_file=str(_TOOLS_DIR / "infer_task_params.json"),

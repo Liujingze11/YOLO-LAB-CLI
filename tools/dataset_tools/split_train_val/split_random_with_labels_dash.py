@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-split_random_with_labels.py — 纯数字版本（严格模式）
-要求文件名（不含扩展名）必须是纯数字，如 1681.jpg、1682.jpg。
-包含 - 或 _ 的文件名（如 1681-2.jpg）会被跳过。
-如果需要支持 1681-2 这类文件名，请使用 split_random_with_labels_dash.py。
+split_random_with_labels_dash.py — 带分隔符版本
+支持文件名包含 - 或 _ 分隔的数字，如 1681.jpg、1681-2.jpg、100_5.jpg。
+每一部分都必须是数字，否则会报错。
+如果需要严格纯数字版本，请使用 split_random_with_labels.py。
 """
 
 import os
@@ -15,7 +15,7 @@ images_train_dir = "请输入你的训练集地址"    # 图片训练集地址
 images_val_dir = "请输入你的验证集目标地址"    # 图片测试集/验证集目标地址
 labels_train_dir = "请输入你的训练集地址"    # 标签训练集地址
 labels_val_dir = "请输入你的验证集目标地址"    # 标签测试集/验证集目标地址
-val_ratio = 0.20   # 比例，例如 20% 就写 0.20（8:2 分割）
+val_ratio = 0.20   # 比例，例如 20% 就写 0.20
 
 # 创建目标文件夹
 os.makedirs(images_val_dir, exist_ok=True)
@@ -24,20 +24,17 @@ os.makedirs(labels_val_dir, exist_ok=True)
 # 支持的图片格式
 valid_ext = (".jpg", ".jpeg", ".png")
 
-# 读取训练集图片
+# 排序辅助函数：将文件名(不含扩展名)按数字部分拆分，支持 "1681"、"1681-2" 等格式
+def sort_key(filename):
+    name = os.path.splitext(filename)[0]       # e.g. "1681-2" or "100"
+    parts = name.replace('-', ' ').replace('_', ' ').split()  # split by - or _
+    return tuple(int(p) for p in parts)
+
+# 读取训练集图片（所有格式匹配的图片都参与分割）
 images = [f for f in os.listdir(images_train_dir) if f.lower().endswith(valid_ext)]
 
-# 只保留"文件名去掉后缀后是纯数字"的图片，避免排序时报错
-valid_images = []
-for f in images:
-    name_without_ext = os.path.splitext(f)[0]
-    if name_without_ext.isdigit():
-        valid_images.append(f)
-    else:
-        print(f"跳过非纯数字文件名图片: {f}")
-
-# 按数字排序
-valid_images.sort(key=lambda x: int(os.path.splitext(x)[0]))
+# 按数字部分排序
+valid_images = sorted(images, key=sort_key)
 
 # 统计总数
 total_count = len(valid_images)

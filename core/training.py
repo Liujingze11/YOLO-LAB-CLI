@@ -47,12 +47,32 @@ def build_train_kwargs(config, use_augment: bool, classes: list = None) -> dict:
             "scale": config.scale, "shear": config.shear,
             "perspective": config.perspective, "flipud": config.flipud,
             "fliplr": config.fliplr, "mosaic": config.mosaic,
-            "copy_paste": config.copy_paste,
+            "copy_paste": config.copy_paste, "erasing": getattr(config, "erasing", 0.0),
         })
     # mixup 独立于 use_augment，由 ask_mixup 单独控制
     if config.mixup > 0:
         kwargs["mixup"] = config.mixup
+    # save_period: 保存所有 epoch 权重时设为 1
+    if getattr(config, "save_all_epochs", False):
+        kwargs["save_period"] = 1
     return kwargs
+
+
+def organize_epoch_weights(config):
+    """将 epoch_*.pt 移入 weights/epochs/ 子目录，保持 weights/ 整洁。"""
+    weights_dir = os.path.join(config.save_dir, "weights")
+    epochs_dir = os.path.join(weights_dir, "epochs")
+    if not os.path.isdir(weights_dir):
+        return
+    # 收集 epoch*.pt 文件
+    import glob
+    epoch_files = glob.glob(os.path.join(weights_dir, "epoch*.pt"))
+    if not epoch_files:
+        return
+    os.makedirs(epochs_dir, exist_ok=True)
+    for f in epoch_files:
+        shutil.move(f, os.path.join(epochs_dir, os.path.basename(f)))
+    print(f"Moved {len(epoch_files)} epoch weights → {epochs_dir}/")
 
 
 def get_class_names_from_data_yaml(data_yaml_path: str) -> dict:

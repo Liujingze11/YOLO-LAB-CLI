@@ -58,6 +58,7 @@
   "aug_params.fliplr": "左右翻转",
   "aug_params.mosaic": "Mosaic",
   "aug_params.copy_paste": "Copy-Paste",
+  "aug_params.erasing": "随机擦除",
   "aug_params.prompt": "回车继续，q 退出：",
 
   "augment.title": "数据增强设置",
@@ -71,6 +72,13 @@
   "mixup.status_off": "关闭",
   "mixup.current": "当前默认值：{status}",
   "mixup.prompt": "y=开启，n=关闭，或输入数值(如0.2)，回车=默认(关闭)，q 退出：",
+
+  "save_all_epochs.title": "保存所有 Epoch 权重",
+  "save_all_epochs.status_on": "是（约 {epochs_est} 个 × 6.5MB ≈ {size_est}MB）",
+  "save_all_epochs.status_off": "否（仅保存 best.pt + last.pt）",
+  "save_all_epochs.current": "当前默认值：{status}",
+  "save_all_epochs.size_hint": "每个权重文件约 6.5MB",
+  "save_all_epochs.prompt": "y=保存所有 epoch 权重，回车/Enter=否（只保存 best+last），q 退出：",
 
   "all_settings": "✓ 所有设置已完成，开始训练",
 

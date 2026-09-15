@@ -19,21 +19,23 @@ class TrainConfig:
     log_dir: str = ""
 
     # === hyperparameters ===
-    epochs: int = 200
+    epochs: int = 100
     imgsz: int = 640
     batch: int = 16
     device: str = field(default_factory=get_default_device)
-    # freeze=10 + cos_lr：冻结 backbone 只训 head，快速适应新环境
+    # 新训练: yolov8n-seg pretrained → O1_split (only_one_object) 全量数据
     lr0: float = 5e-4
-    warmup_epochs: float = 5.0
+    warmup_epochs: float = 3.0
     lrf: float = 0.01
-    close_mosaic: int = 5
-    multi_scale: float = 0.5
+    close_mosaic: int = 10
+    multi_scale: float = 0.0
     freeze: int = 0
     cos_lr: bool = True
     lr_scheduler: str = "cosine"  # "adaptive" | "restart" | "cosine"
 
-    experiment_name: str = "3cls_mix7_close_scratch_e200_lr5e-4_b16_imgsz640_cm5_mx02"
+    save_all_epochs: bool = False
+
+    experiment_name: str = "o1_split_t7v3_n980_yolov8n-seg_e100_lr5e-4_freeze0_V1"
 
     # === data augmentation ===
     use_augment: bool = True
@@ -42,14 +44,15 @@ class TrainConfig:
     hsv_v: float = 0.4
     degrees: float = 0.0
     translate: float = 0.1
-    scale: float = 0.5
+    scale: float = 0.3
     shear: float = 0.0
     perspective: float = 0.0
     flipud: float = 0.0
-    fliplr: float = 0.5
+    fliplr: float = 0.0
     mosaic: float = 1.0
-    mixup: float = 0.2
+    mixup: float = 0.0
     copy_paste: float = 0.0
+    erasing: float = 0.4
 
     @property
     def save_dir(self) -> str:

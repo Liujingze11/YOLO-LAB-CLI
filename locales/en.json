@@ -58,6 +58,7 @@
   "aug_params.fliplr": "Flip L-R",
   "aug_params.mosaic": "Mosaic",
   "aug_params.copy_paste": "Copy-Paste",
+  "aug_params.erasing": "Random Erasing",
   "aug_params.prompt": "Enter/y to continue, n/q to cancel: ",
 
   "augment.title": "Data Augmentation",
@@ -71,6 +72,13 @@
   "mixup.status_off": "OFF",
   "mixup.current": "Current default: {status}",
   "mixup.prompt": "Set Mixup: y=ON, n=OFF, number 0~1 (e.g. 0.2), Enter=default, q=quit: ",
+
+  "save_all_epochs.title": "Save All Epoch Weights",
+  "save_all_epochs.status_on": "Yes (~800MB for 120 epochs)",
+  "save_all_epochs.status_off": "No (only best.pt + last.pt)",
+  "save_all_epochs.current": "Current default: {status}",
+  "save_all_epochs.size_hint": "Each weight file is ~6.5MB",
+  "save_all_epochs.prompt": "Save all epoch weights? y=YES, Enter/n=NO, q=quit: ",
 
   "all_settings": "✓ All settings confirmed, starting training",
 
