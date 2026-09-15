@@ -55,7 +55,6 @@ YOLO-LAB-CLI/
 ├── tools/                  # Scripts de utilidad
 │   ├── predict_tools/      # Inferencia (predict.py + parámetros de tarea)
 │   └── dataset_tools/      # División de datasets y herramientas de etiquetas
-├── tests/                  # Suite de pruebas pytest
 ├── docs/                   # README traducidos (zh / fr / es)
 ├── outputs/                # Salidas de entrenamiento (git-ignorado)
 │   ├── result/             # Pesos de modelos y gráficos

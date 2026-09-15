@@ -55,7 +55,6 @@ YOLO-LAB-CLI/
 ├── tools/                  # Utility scripts
 │   ├── predict_tools/      # Inference (predict.py + task params)
 │   └── dataset_tools/      # Dataset splitting & label utilities
-├── tests/                  # pytest test suite
 ├── docs/                   # Translated READMEs (zh / fr / es)
 ├── outputs/                # Training outputs (git-ignored)
 │   ├── result/             # Model weights & plots
