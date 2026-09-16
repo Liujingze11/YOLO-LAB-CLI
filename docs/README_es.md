@@ -14,7 +14,7 @@ Herramienta de línea de comandos para entrenamiento de segmentación YOLO, basa
 - Validación automática con registro CSV (métricas globales y por clase)
 - Aislamiento de experimentos: cada ejecución crea directorios y registros independientes
 - Parámetros CLI (`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`)
-- Detección automática del idioma del sistema (zh/en/fr/es), con `--lang` para forzar
+- Detección automática del idioma del sistema (zh/en/fr/es)
 
 ## Inicio Rápido
 
@@ -51,7 +51,6 @@ YOLO-LAB-CLI/
 │   ├── device.py           # Detección de GPU
 │   ├── i18n.py             # Ayuda i18n
 │   └── paths.py            # Registro de modelos
-├── scripts/                # Scripts de inferencia y revalidación
 ├── tools/                  # Scripts de utilidad
 │   ├── predict_tools/      # Inferencia (predict.py + parámetros de tarea)
 │   └── dataset_tools/      # División de datasets y herramientas de etiquetas
@@ -79,14 +78,7 @@ Cada modo pasa por un flujo de confirmación — YAML del dataset → hiperpará
 python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name mi_experimento
 ```
 
-El idioma se detecta automáticamente. Forzar con `--lang`:
-
-```bash
-python main.py --lang es   # Español
-python main.py --lang en   # English
-python main.py --lang fr   # Français
-python main.py --lang zh   # 中文
-```
+El idioma se detecta automáticamente.
 
 ## Formato de Configuración de Datos
 

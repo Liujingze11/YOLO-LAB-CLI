@@ -14,7 +14,7 @@ YOLO 分割模型命令行训练工具，基于 Ultralytics。
 - 自动验证并记录 CSV 日志（整体 + 每类指标）
 - 实验隔离：每次训练生成独立的结果目录和日志
 - 命令行参数覆盖配置（`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`）
-- 自动检测系统语言（zh/en/fr/es），支持 `--lang` 手动指定
+- 自动检测系统语言（zh/en/fr/es）
 
 ## 快速开始
 
@@ -51,7 +51,6 @@ YOLO-LAB-CLI/
 │   ├── device.py           # GPU 检测
 │   ├── i18n.py             # i18n 辅助函数
 │   └── paths.py            # 模型注册表
-├── scripts/                # 推理与复评辅助脚本
 ├── tools/                  # 工具脚本
 │   ├── predict_tools/      # 推理（predict.py + 任务参数）
 │   └── dataset_tools/      # 数据集划分与标签工具
@@ -79,14 +78,7 @@ YOLO-LAB-CLI/
 python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name my_experiment
 ```
 
-语言默认根据系统区域自动检测，也可用 `--lang` 手动指定：
-
-```bash
-python main.py --lang en   # English
-python main.py --lang fr   # Français
-python main.py --lang es   # Español
-python main.py --lang zh   # 中文
-```
+语言默认根据系统区域自动检测。
 
 ## 数据集配置格式
 

@@ -23,7 +23,7 @@ class TrainConfig:
     imgsz: int = 640
     batch: int = 16
     device: str = field(default_factory=get_default_device)
-    # 新训练: yolov8n-seg pretrained → O1_split (only_one_object) 全量数据
+    # 新训练: yolov8n-seg pretrained → O1_split / O2_split (only_one_object) 全量数据
     lr0: float = 5e-4
     warmup_epochs: float = 3.0
     lrf: float = 0.01
@@ -35,7 +35,7 @@ class TrainConfig:
 
     save_all_epochs: bool = False
 
-    experiment_name: str = "o1_split_t7v3_n980_yolov8n-seg_e100_lr5e-4_freeze0_V1"
+    experiment_name: str = "o2_split_t7v3_n704_yolov8n-seg_e100_lr5e-4_freeze0_V1"
 
     # === data augmentation ===
     use_augment: bool = True

@@ -30,7 +30,7 @@ def set_locale(loc):
     _loc = loc
 
 # === 类别过滤：不修改原始标注txt文件，训练时自动过滤+重映射 ===
-_CLASSES_FILTER = [1]  # o1_split: 单类别 object（分割）
+_CLASSES_FILTER = [1]  # o1_split / o2_split: 单类别 object（分割）
 
 # ── 确认流程（分步：YAML → 超参数 → 增强 → mixup）──────────
 

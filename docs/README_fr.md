@@ -14,7 +14,7 @@ Outil de formation en ligne de commande pour la segmentation YOLO, basé sur Ult
 - Validation automatique avec journalisation CSV (métriques globales et par classe)
 - Isolation des expériences : chaque exécution crée des répertoires et journaux indépendants
 - Paramètres CLI (`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`)
-- Détection automatique de la langue système (zh/en/fr/es), avec `--lang` pour forcer
+- Détection automatique de la langue système (zh/en/fr/es)
 
 ## Démarrage Rapide
 
@@ -51,7 +51,6 @@ YOLO-LAB-CLI/
 │   ├── device.py           # Détection GPU
 │   ├── i18n.py             # Aide à l'i18n
 │   └── paths.py            # Registre des modèles
-├── scripts/                # Scripts d'inférence et de revalidation
 ├── tools/                  # Scripts utilitaires
 │   ├── predict_tools/      # Inférence (predict.py + paramètres de tâche)
 │   └── dataset_tools/      # Division des jeux de données & outils d'étiquettes
@@ -79,14 +78,7 @@ Chaque mode passe par un flux de confirmation — YAML du jeu de données → hy
 python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name mon_experience
 ```
 
-La langue est détectée automatiquement. Forcer avec `--lang` :
-
-```bash
-python main.py --lang fr   # Français
-python main.py --lang en   # English
-python main.py --lang zh   # 中文
-python main.py --lang es   # Español
-```
+La langue est détectée automatiquement.
 
 ## Format de Configuration des Données
 

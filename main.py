@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-"""YOLO-LAB-CLI entry point — i18n, arg parsing, mode menu."""
-
 import locale
 import argparse
 from pathlib import Path
@@ -15,6 +12,7 @@ LOCALE_DIR = Path(__file__).resolve().parent / "locales"
 
 
 def _detect_lang():
+    # 读取系统语言前两位,支持 zh/en/fr/es,其余情况兜底返回 en
     try:
         system_lang, _ = locale.getdefaultlocale()
         if system_lang:
@@ -26,20 +24,21 @@ def _detect_lang():
     return "en"
 
 
-# ── CLI ──────────────────────────────────────────────────
+# ── CLI args ─────────────────────────────────────────────
 
 def parse_args():
+    # 声明可接收的命令行开关,用户未传入的一律为 None
     parser = argparse.ArgumentParser(description="YOLO training script")
     parser.add_argument("--epochs", type=int, default=None, help="training epochs")
     parser.add_argument("--imgsz", type=int, default=None, help="input image size")
     parser.add_argument("--batch", type=int, default=None, help="batch size")
     parser.add_argument("--device", type=str, default=None, help="device: 0 / 0,1 / cpu")
     parser.add_argument("--name", type=str, default=None, help="experiment name")
-    parser.add_argument("--lang", type=str, default=None, help="language: zh/en/fr/es (auto-detect if not set)")
     return parser.parse_args()
 
 
 def apply_cli_overrides(train_config, args):
+    # 只覆盖用户显式传入的开关,未传入的保持默认值
     if args.epochs is not None:
         train_config.epochs = args.epochs
     if args.imgsz is not None:
@@ -53,12 +52,14 @@ def apply_cli_overrides(train_config, args):
     return train_config
 
 
+# ── main ─────────────────────────────────────────────────
+
 def main():
     args = parse_args()
-    lang = args.lang or _detect_lang()
+    lang = _detect_lang()
     _loc = load_locale(LOCALE_DIR, lang)
 
-    # Inject locale into train module so all training functions can use it
+    # 把翻译表注入训练模块,后续所有训练函数都能使用
     set_locale(_loc)
 
     train_config = TrainConfig(

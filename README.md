@@ -14,7 +14,7 @@ Command-line YOLO segmentation training tool built on Ultralytics.
 - Automatic validation with CSV logging (overall + per-class metrics)
 - Experiment isolation: each run creates independent result directories and logs
 - CLI parameter overrides (`--epochs`, `--imgsz`, `--batch`, `--device`, `--name`)
-- Auto-detects system language (zh/en/fr/es), with `--lang` override
+- Auto-detects system language (zh/en/fr/es)
 
 ## Quick Start
 
@@ -51,7 +51,6 @@ YOLO-LAB-CLI/
 │   ├── device.py           # GPU detection
 │   ├── i18n.py             # i18n helpers
 │   └── paths.py            # Model registry
-├── scripts/                # Inference & revalidation helper scripts
 ├── tools/                  # Utility scripts
 │   ├── predict_tools/      # Inference (predict.py + task params)
 │   └── dataset_tools/      # Dataset splitting & label utilities
@@ -79,14 +78,7 @@ Every mode walks through a confirmation flow — dataset YAML → hyperparameter
 python main.py --epochs 200 --imgsz 1280 --batch 8 --device 0 --name my_experiment
 ```
 
-Language is auto-detected from the system locale. Override with `--lang`:
-
-```bash
-python main.py --lang en   # English
-python main.py --lang fr   # Français
-python main.py --lang es   # Español
-python main.py --lang zh   # 中文
-```
+Language is auto-detected from the system locale.
 
 ## Dataset Config Format
 
