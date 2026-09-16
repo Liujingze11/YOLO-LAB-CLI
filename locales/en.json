@@ -3,7 +3,7 @@
   "mode.1": "Mode 1 - Start new training",
   "mode.2": "Mode 2 - Resume last interrupted training",
   "mode.3": "Mode 3 - Fine-tune from historical best.pt",
-  "mode.prompt": "Enter 1, 2, or 3 (press Enter to exit)",
+  "mode.prompt": "(1/2/3, enter=1): ",
   "mode.invalid": "Invalid input. Program exited.",
 
   "confirm.title": "About to execute: {mode}",
@@ -11,7 +11,7 @@
   "confirm.data_yaml": "Data config file : {path}",
   "confirm.exp_name": "Experiment name   : {name}",
   "confirm.epochs": "Epochs            : {epochs}",
-  "confirm.prompt": "Enter/y to continue, n/q to cancel: ",
+  "confirm.prompt": "(y/n, enter=y, q=exit): ",
   "confirm.quit": "Exited.",
   "confirm.cancelled": "Training cancelled.",
 
@@ -22,7 +22,7 @@
   "yaml.val": "Val set",
   "yaml.test": "Test set",
   "yaml.classes": "Classes",
-  "yaml.prompt": "Enter/y to continue, n/q to cancel: ",
+  "yaml.prompt": "(y/n, enter=y, q=exit): ",
 
   "hyper.title": "Training Hyperparameters",
   "hyper.model": "Starting model",
@@ -35,14 +35,14 @@
   "hyper.mosaic": "Mosaic",
   "hyper.warmup": "Warmup",
   "hyper.lr_resume_note": "restored from optimizer state on resume",
-  "hyper.prompt": "Enter/y to continue, n/q to cancel: ",
+  "hyper.prompt": "(y/n, enter=y, q=exit): ",
 
   "lr_scheduler.title": "LR Scheduler Strategy",
   "lr_scheduler.adaptive": "Adaptive LR (halve when mAP stalls)",
   "lr_scheduler.restart": "Cosine Warm Restart (reset every 50 epochs)",
   "lr_scheduler.cosine": "Standard Cosine Decay",
   "lr_scheduler.current": "Current default: {current}",
-  "lr_scheduler.prompt": "Select LR scheduler: 1=Adaptive, 2=Warm Restart, 3=Standard Cosine, Enter=default, q=quit: ",
+  "lr_scheduler.prompt": "(1/2/3, enter=current, q=exit): ",
   "lr_scheduler.selected": "Selected: {selected}",
 
   "aug_params.title": "Augmentation Parameters",
@@ -59,31 +59,31 @@
   "aug_params.mosaic": "Mosaic",
   "aug_params.copy_paste": "Copy-Paste",
   "aug_params.erasing": "Random Erasing",
-  "aug_params.prompt": "Enter/y to continue, n/q to cancel: ",
+  "aug_params.prompt": "(y/n, enter=y, q=exit): ",
 
   "augment.title": "Data Augmentation",
   "augment.status_on": "ON",
   "augment.status_off": "OFF",
   "augment.current": "Current default: {status}",
-  "augment.prompt": "Enable augmentation? y=ON, n=OFF, Enter=default, q=quit: ",
+  "augment.prompt": "(y/n, enter=y, q=exit): ",
 
   "mixup.title": "Mixup Augmentation",
   "mixup.status_on": "ON (mixup={value})",
   "mixup.status_off": "OFF",
   "mixup.current": "Current default: {status}",
-  "mixup.prompt": "Set Mixup: y=ON, n=OFF, number 0~1 (e.g. 0.2), Enter=default, q=quit: ",
+  "mixup.prompt": "(y/n, enter=y, number=0~1, q=exit): ",
 
   "save_all_epochs.title": "Save All Epoch Weights",
   "save_all_epochs.status_on": "Yes (~800MB for 120 epochs)",
   "save_all_epochs.status_off": "No (only best.pt + last.pt)",
   "save_all_epochs.current": "Current default: {status}",
   "save_all_epochs.size_hint": "Each weight file is ~6.5MB",
-  "save_all_epochs.prompt": "Save all epoch weights? y=YES, Enter/n=NO, q=quit: ",
+  "save_all_epochs.prompt": "(y/n, enter=y, q=exit): ",
 
   "all_settings": "✓ All settings confirmed, starting training",
 
   "resume.not_found": "No resume weights found: {path}",
-  "resume.fallback_prompt": "Start a new training instead? Enter/y=yes, n/q=cancel: ",
+  "resume.fallback_prompt": "(y/n, enter=y, q=exit): ",
   "resume.cancelled": "Cancelled.",
   "resume.failed": "Resume training failed: {err}",
 

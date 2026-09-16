@@ -76,7 +76,7 @@ def main():
     print(_t(_loc, "mode.3"))
     choice = input(_t(_loc, "mode.prompt") + "\n").strip()
 
-    if choice == "1":
+    if choice in ("", "1"):
         start_new_training(train_config)
     elif choice == "2":
         resume_training(train_config)

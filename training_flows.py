@@ -47,7 +47,7 @@ def _parse_data_yaml(data_yaml_path: str) -> dict:
     }
 
 
-def _confirm(prompt: str, show_n: bool = False) -> bool | None:
+def _confirm(prompt: str) -> bool | None:
     """确认步骤。Enter/y → True，q → None（退出），n → False（取消）。
     其他任意键忽略，防止误触。
     """
@@ -133,7 +133,7 @@ def ask_confirm_train(mode, pt_path, config):
     print(_t(_loc, "confirm.epochs", epochs=config.epochs))
     print("------------------------------")
 
-    return _confirm(_t(_loc, "confirm.prompt"), show_n=True) is True
+    return _confirm(_t(_loc, "confirm.prompt")) is True
 
 
 def confirm_augment_params(config: TrainConfig) -> bool:
@@ -198,49 +198,34 @@ def ask_lr_scheduler(config):
 
 
 def _run_confirmation_flow(config: TrainConfig, pt_path: str, mode_label: str, is_resume: bool = False) -> tuple:
-    """Full confirmation flow (保持用户习惯，第一步不变):
-    Step 1: ask_confirm_train (existing)
-    Step 2: confirm_data_yaml (NEW)
-    Step 3: confirm_hyperparams (NEW)
-    Step 3.5: ask_lr_scheduler (NEW - LR策略选择)
-    Step 4: ask_use_augment (existing)
-    Step 4.5: confirm_augment_params (NEW, only if augment enabled)
-    Step 5: ask_mixup (existing)
-    Returns (confirmed: bool, use_augment: bool, mixup_value: float).
+    """完整确认流程:基本确认 → YAML → 超参数 → LR 策略 → 增强 → 增强参数 → Mixup → 保存权重。
+    Returns (confirmed, use_augment, mixup_value, save_all)。
     """
-    # Step 1: basic confirm (keeping user habit)
     if not ask_confirm_train(mode_label, pt_path, config):
-        return False, False, 0.0
+        return False, False, 0.0, False
 
-    # Step 2: data YAML details (NEW)
     if not confirm_data_yaml(config):
-        return False, False, 0.0
+        return False, False, 0.0, False
 
-    # Step 3: hyperparameters (NEW)
     if not confirm_hyperparams(config, pt_path, is_resume):
-        return False, False, 0.0
+        return False, False, 0.0, False
 
-    # Step 3.5: LR scheduler (NEW)
     if not is_resume:
         if not ask_lr_scheduler(config):
-            return False, False, 0.0
+            return False, False, 0.0, False
 
-    # Step 4: augment
     use_augment = ask_use_augment(config)
     if use_augment is None:
-        return False, False, 0.0
+        return False, False, 0.0, False
 
-    # Step 4.5: if augment enabled, show augment params for confirmation (NEW)
     if use_augment:
         if not confirm_augment_params(config):
-            return False, False, 0.0
+            return False, False, 0.0, False
 
-    # Step 5: mixup
     mixup_value = ask_mixup(config)
     if mixup_value is None:
         return False, False, 0.0, False
 
-    # Step 6: save_all_epochs
     save_all = ask_save_all_epochs(config)
     if save_all is None:
         return False, False, 0.0, False
@@ -260,12 +245,10 @@ def ask_use_augment(config):
         if choice == "q":
             print(f"\n{_t(_loc, 'confirm.quit')}")
             return None
-        if choice == "y":
+        if choice in ("", "y"):
             return True
         if choice == "n":
             return False
-        if choice == "":
-            return config.use_augment  # Enter = default
         # 其他按键忽略
 
 
@@ -278,16 +261,14 @@ def ask_mixup(config):
 
     while True:
         choice = input(_t(_loc, "mixup.prompt")).strip()
-        if choice == "":
-            return config.mixup  # Enter = default
+        if choice in ("", "y"):
+            return config.mixup if config.mixup > 0 else 0.2
         low = choice.lower()
         if low == "q":
             print(f"\n{_t(_loc, 'confirm.quit')}")
             return None
         if low == "n":
             return 0.0
-        if low == "y":
-            return config.mixup if config.mixup > 0 else 0.2
         try:
             val = float(choice)
             return max(0.0, min(1.0, val))
@@ -309,10 +290,10 @@ def ask_save_all_epochs(config):
         if choice == "q":
             print(f"\n{_t(_loc, 'confirm.quit')}")
             return None
-        if choice in ("", "n"):
-            return False
-        if choice == "y":
+        if choice in ("", "y"):
             return True
+        if choice == "n":
+            return False
         # 其他按键忽略
 
 

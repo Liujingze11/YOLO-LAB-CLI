@@ -3,7 +3,7 @@
   "mode.1": "Modo 1 - Nuevo entrenamiento",
   "mode.2": "Modo 2 - Reanudar entrenamiento interrumpido",
   "mode.3": "Modo 3 - Ajustar desde best.pt histórico",
-  "mode.prompt": "Ingrese 1, 2 o 3 (Enter para salir)",
+  "mode.prompt": "(1/2/3, enter=1): ",
   "mode.invalid": "Entrada inválida. Programa terminado.",
 
   "confirm.title": "A punto de ejecutar: {mode}",
@@ -11,7 +11,7 @@
   "confirm.data_yaml": "Archivo de datos  : {path}",
   "confirm.exp_name": "Nombre experimento: {name}",
   "confirm.epochs": "Epochs            : {epochs}",
-  "confirm.prompt": "Enter/y para continuar, n/q para cancelar: ",
+  "confirm.prompt": "(y/n, enter=y, q=salir): ",
   "confirm.quit": "Salió.",
   "confirm.cancelled": "Entrenamiento cancelado.",
 
@@ -22,7 +22,7 @@
   "yaml.val": "Validación",
   "yaml.test": "Prueba",
   "yaml.classes": "Clases",
-  "yaml.prompt": "Enter/y para continuar, n/q para cancelar: ",
+  "yaml.prompt": "(y/n, enter=y, q=salir): ",
 
   "hyper.title": "Hiperparámetros",
   "hyper.model": "Modelo inicial",
@@ -35,14 +35,14 @@
   "hyper.mosaic": "Mosaic",
   "hyper.warmup": "Warmup",
   "hyper.lr_resume_note": "restaurado desde estado del optimizador",
-  "hyper.prompt": "Enter/y para continuar, n/q para cancelar: ",
+  "hyper.prompt": "(y/n, enter=y, q=salir): ",
 
   "lr_scheduler.title": "Estrategia LR",
   "lr_scheduler.adaptive": "LR adaptativo (reduce si mAP se estanca)",
   "lr_scheduler.restart": "Cosine Warm Restart (reinicia cada 50 épocas)",
   "lr_scheduler.cosine": "Coseno estándar",
   "lr_scheduler.current": "Predeterminado: {current}",
-  "lr_scheduler.prompt": "Elige: 1=Adaptativo, 2=Warm Restart, 3=Coseno, Enter=predeterminado, q=salir: ",
+  "lr_scheduler.prompt": "(1/2/3, enter=actual, q=salir): ",
   "lr_scheduler.selected": "Seleccionado: {selected}",
 
   "aug_params.title": "Parámetros de aumentación",
@@ -58,22 +58,29 @@
   "aug_params.fliplr": "Voltear Izq-Der",
   "aug_params.mosaic": "Mosaic",
   "aug_params.copy_paste": "Copy-Paste",
-  "aug_params.prompt": "Enter/y para continuar, n/q para cancelar: ",
+  "aug_params.prompt": "(y/n, enter=y, q=salir): ",
 
   "augment.title": "Aumento de datos",
   "augment.status_on": "ACTIVADO",
   "augment.status_off": "DESACTIVADO",
   "augment.current": "Valor predeterminado: {status}",
-  "augment.prompt": "¿Activar aumento? y=SÍ, n=NO, Enter=predeterminado, q=salir: ",
+  "augment.prompt": "(y/n, enter=y, q=salir): ",
 
   "mixup.title": "Aumento Mixup",
   "mixup.status_on": "ACTIVADO (mixup={value})",
   "mixup.status_off": "DESACTIVADO",
   "mixup.current": "Valor predeterminado: {status}",
-  "mixup.prompt": "Configurar Mixup: y=SÍ, n=NO, número 0~1 (ej. 0.2), Enter=predeterminado, q=salir: ",
+  "mixup.prompt": "(y/n, enter=y, número=0~1, q=salir): ",
 
   "resume.not_found": "No se encontraron pesos de reanudación: {path}",
-  "resume.fallback_prompt": "¿Iniciar un nuevo entrenamiento? Enter/y=sí, n/q=cancelar: ",
+  "save_all_epochs.title": "Guardar pesos de todas las épocas",
+  "save_all_epochs.status_on": "Sí (un .pt por época, ~6.5MB cada uno)",
+  "save_all_epochs.status_off": "No (solo best.pt + last.pt)",
+  "save_all_epochs.current": "Valor predeterminado: {status}",
+  "save_all_epochs.size_hint": "Cada archivo de pesos pesa ~6.5MB",
+  "save_all_epochs.prompt": "(y/n, enter=y, q=salir): ",
+
+  "resume.fallback_prompt": "(y/n, enter=y, q=salir): ",
   "resume.cancelled": "Cancelado.",
   "resume.failed": "Error al reanudar entrenamiento: {err}",
 

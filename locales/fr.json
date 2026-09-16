@@ -3,7 +3,7 @@
   "mode.1": "Mode 1 - Nouvel entraînement",
   "mode.2": "Mode 2 - Reprendre l'entraînement interrompu",
   "mode.3": "Mode 3 - Ajuster depuis le best.pt historique",
-  "mode.prompt": "Entrez 1, 2 ou 3 (Entrée pour quitter)",
+  "mode.prompt": "(1/2/3, enter=1): ",
   "mode.invalid": "Entrée invalide. Programme terminé.",
 
   "confirm.title": "Va exécuter : {mode}",
@@ -11,7 +11,7 @@
   "confirm.data_yaml": "Fichier de données : {path}",
   "confirm.exp_name": "Nom de l'expérience : {name}",
   "confirm.epochs": "Epochs            : {epochs}",
-  "confirm.prompt": "Entrée/y pour continuer, n/q pour annuler : ",
+  "confirm.prompt": "(y/n, enter=y, q=quitter): ",
   "confirm.quit": "Sorti.",
   "confirm.cancelled": "Entraînement annulé.",
 
@@ -22,7 +22,7 @@
   "yaml.val": "Validation",
   "yaml.test": "Test",
   "yaml.classes": "Classes",
-  "yaml.prompt": "Entrée/y pour continuer, n/q pour annuler : ",
+  "yaml.prompt": "(y/n, enter=y, q=quitter): ",
 
   "hyper.title": "Hyperparamètres",
   "hyper.model": "Modèle de départ",
@@ -35,14 +35,14 @@
   "hyper.mosaic": "Mosaic",
   "hyper.warmup": "Warmup",
   "hyper.lr_resume_note": "restauré depuis l'état de l'optimiseur",
-  "hyper.prompt": "Entrée/y pour continuer, n/q pour annuler : ",
+  "hyper.prompt": "(y/n, enter=y, q=quitter): ",
 
   "lr_scheduler.title": "Stratégie LR",
   "lr_scheduler.adaptive": "LR adaptatif (réduit si mAP stagne)",
   "lr_scheduler.restart": "Cosine Warm Restart (réinitialise tous les 50 epochs)",
   "lr_scheduler.cosine": "Cosine standard",
   "lr_scheduler.current": "Défaut actuel: {current}",
-  "lr_scheduler.prompt": "Choisir: 1=Adaptatif, 2=Warm Restart, 3=Cosinus standard, Entrée=défaut, q=quitter: ",
+  "lr_scheduler.prompt": "(1/2/3, enter=actuel, q=quitter): ",
   "lr_scheduler.selected": "Sélectionné: {selected}",
 
   "aug_params.title": "Paramètres d'augmentation",
@@ -58,22 +58,29 @@
   "aug_params.fliplr": "Retourner G-D",
   "aug_params.mosaic": "Mosaic",
   "aug_params.copy_paste": "Copy-Paste",
-  "aug_params.prompt": "Entrée/y pour continuer, n/q pour annuler : ",
+  "aug_params.prompt": "(y/n, enter=y, q=quitter): ",
 
   "augment.title": "Augmentation de données",
   "augment.status_on": "ACTIVÉE",
   "augment.status_off": "DÉSACTIVÉE",
   "augment.current": "Valeur par défaut : {status}",
-  "augment.prompt": "Activer l'augmentation ? y=OUI, n=NON, Entrée=défaut, q=quitter : ",
+  "augment.prompt": "(y/n, enter=y, q=quitter): ",
 
   "mixup.title": "Augmentation Mixup",
   "mixup.status_on": "ACTIVÉE (mixup={value})",
   "mixup.status_off": "DÉSACTIVÉE",
   "mixup.current": "Valeur par défaut : {status}",
-  "mixup.prompt": "Configurer Mixup: y=OUI, n=NON, nombre 0~1 (ex. 0.2), Entrée=défaut, q=quitter : ",
+  "mixup.prompt": "(y/n, enter=y, nombre=0~1, q=quitter): ",
 
   "resume.not_found": "Poids de reprise introuvables : {path}",
-  "resume.fallback_prompt": "Démarrer un nouvel entraînement ? Entrée/y=oui, n/q=annuler : ",
+  "save_all_epochs.title": "Sauvegarder tous les poids d'époques",
+  "save_all_epochs.status_on": "Oui (un .pt par époque, ~6,5MB chacun)",
+  "save_all_epochs.status_off": "Non (seulement best.pt + last.pt)",
+  "save_all_epochs.current": "Valeur par défaut : {status}",
+  "save_all_epochs.size_hint": "Chaque fichier de poids fait ~6,5MB",
+  "save_all_epochs.prompt": "(y/n, enter=y, q=quitter): ",
+
+  "resume.fallback_prompt": "(y/n, enter=y, q=quitter): ",
   "resume.cancelled": "Annulé.",
   "resume.failed": "Échec de la reprise : {err}",
 
