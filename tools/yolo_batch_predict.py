@@ -1,8 +1,8 @@
 """YOLO 分割推理脚本:对图片文件夹逐张推理,输出带小字标注的图片(保持原目录结构)。
 
-用法:
-    python run_inference.py --model <path_to_best.pt> --source <输入图片文件夹> --output <输出文件夹>
-    python run_inference.py --model ... --source ... --output ... --conf 0.5 --font-size 9 --line-width 1
+用法(相对路径按运行命令时所在的目录解释,绝对路径同样可以):
+    python yolo_batch_predict.py --model <path_to_best.pt> --source <输入图片文件夹> --output <输出文件夹>
+    python yolo_batch_predict.py --model ... --source ... --output ... --conf 0.5 --font-size 9 --line-width 1
 
 说明:
     置信度默认 0.7,文字字号默认 9(小字),框线宽默认 1(细线)。

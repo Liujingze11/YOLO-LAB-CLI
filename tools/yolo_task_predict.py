@@ -1,9 +1,17 @@
+"""单源推理:加载模型后自动识别任务类型(detect/segment/classify/pose/obb),按 yolo_task_params.json 中的参数推理,输出 _overlay.jpg 叠加图。
+
+用法(无命令行参数,直接运行):
+    python yolo_task_predict.py
+
+模型路径、输入源、输出目录都在文件底部 InferConfig 里改(注释"只改这里")。
+路径支持相对与绝对;相对路径按运行命令时所在的目录解释。
+"""
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 import json
 
-# ensure project root on sys.path when run from anywhere
+# 把项目根目录加进 sys.path,保证从任何目录运行都能 import cli_config
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from ultralytics import YOLO
@@ -24,7 +32,7 @@ class InferConfig:
     imgsz: int = 640
 
     # 外置任务参数文件
-    task_param_file: str = str(_TOOLS_DIR / "infer_task_params.json")
+    task_param_file: str = str(_TOOLS_DIR / "yolo_task_params.json")
 
     # 输出文件后缀
     out_suffix: str = "_overlay.jpg"
@@ -109,7 +117,7 @@ if __name__ == "__main__":
         save_dir=str(Path(PREDICT_DIR) / "seg_dataset_all_pro_random__aug_e150_b16_mask_overlay2"),
         conf=0.406,
         imgsz=640,
-        task_param_file=str(_TOOLS_DIR / "infer_task_params.json"),
+        task_param_file=str(_TOOLS_DIR / "yolo_task_params.json"),
         out_suffix="_overlay.jpg"
     )
 

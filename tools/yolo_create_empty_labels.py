@@ -1,9 +1,10 @@
-"""为图片文件夹中的每张图片创建同名空标签 txt(已存在的标签绝不覆盖)。
+"""为训练数据中的每张图片创建同名空标签 txt(已存在的标签绝不覆盖)。
 
-用法:
-    python create_empty_labels.py                                              # 默认: 图片/ → 标签/
-    python create_empty_labels.py --images images --labels labels              # 自定义文件夹名
-    python create_empty_labels.py --images data/train/images --labels data/train/labels
+用法(相对路径按运行命令时所在的目录解释,绝对路径同样可以):
+    python yolo_create_empty_labels.py                                  # 默认: images/ → labels/
+    python yolo_create_empty_labels.py --images images --labels labels  # 自定义文件夹名
+    python yolo_create_empty_labels.py --images data/train/images --labels data/train/labels
+    python yolo_create_empty_labels.py --images /path/to/images --labels /path/to/labels  # 绝对路径也行
 """
 import argparse
 import os
@@ -12,10 +13,10 @@ IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 
 
 def parse_args():
-    # 声明 --images / --labels 两个开关,不传参时保持旧行为(图片/ 标签/)
+    # 声明 --images / --labels 两个开关,默认值采用官方格式的顶层文件夹(images 与 labels)
     parser = argparse.ArgumentParser(description="为图片创建同名空标签 txt,已存在的标签绝不覆盖")
-    parser.add_argument("--images", default="图片", help="图片文件夹(默认: 图片)")
-    parser.add_argument("--labels", default="标签", help="标签文件夹(默认: 标签)")
+    parser.add_argument("--images", default="images", help="训练图片文件夹(默认: images)")
+    parser.add_argument("--labels", default="labels", help="标签文件夹(默认: labels)")
     return parser.parse_args()
 
 

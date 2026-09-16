@@ -52,10 +52,10 @@ YOLO-LAB-CLI/
 │   ├── i18n.py             # Ayuda i18n
 │   └── paths.py            # Registro de modelos
 ├── tools/                  # Scripts de utilidad
-│   ├── predict.py            # Inferencia (predict.py + parámetros de tarea)
-│   ├── run_inference.py      # Inferencia por lotes, imágenes anotadas
-│   ├── split_dataset.py      # División de datasets
-│   └── create_empty_labels.py # Crear etiquetas vacías
+│   ├── yolo_task_predict.py  # Inferencia (parámetros por tarea)
+│   ├── yolo_batch_predict.py # Inferencia por lotes, imágenes anotadas
+│   ├── yolo_split_dataset.py # División de datasets
+│   └── yolo_create_empty_labels.py # Crear etiquetas vacías
 ├── docs/                   # README traducidos (zh / fr / es)
 ├── outputs/                # Salidas de entrenamiento (git-ignorado)
 │   ├── result/             # Pesos de modelos y gráficos

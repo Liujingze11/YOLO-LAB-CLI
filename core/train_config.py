@@ -31,7 +31,7 @@ class TrainConfig:
 
     save_all_epochs: bool = False
 
-    experiment_name: str = "o2_split_t7v3_n704_yolov8n-seg_e100_lr5e-4_freeze0_V1"
+    experiment_name: str = "o1_split_t7v3_n980_yolov8n-seg_e100_lr5e-4_freeze0_V1"
 
     # === data augmentation ===
     use_augment: bool = True

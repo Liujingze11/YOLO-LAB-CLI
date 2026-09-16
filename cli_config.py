@@ -5,7 +5,7 @@ from core.train_config import TrainConfig, load_user_config, save_user_config, m
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
-DATA_YAML = str(PROJECT_ROOT / "yaml" / "data_o2_split.yaml")
+DATA_YAML = str(PROJECT_ROOT / "yaml" / "data_o1_split.yaml")
 MODEL_FILE = str(PROJECT_ROOT / "pretrained_models" / "yolov8n-seg.pt")  # ultralytics pretrained base model
 RESULTS_DIR = str(PROJECT_ROOT / "outputs" / "result")
 LOG_DIR = str(PROJECT_ROOT / "outputs" / "logs")
