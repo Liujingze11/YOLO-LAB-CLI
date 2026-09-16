@@ -52,8 +52,10 @@ YOLO-LAB-CLI/
 │   ├── i18n.py             # Aide à l'i18n
 │   └── paths.py            # Registre des modèles
 ├── tools/                  # Scripts utilitaires
-│   ├── predict_tools/      # Inférence (predict.py + paramètres de tâche)
-│   └── dataset_tools/      # Division des jeux de données & outils d'étiquettes
+│   ├── predict.py            # Inférence (predict.py + paramètres de tâche)
+│   ├── run_inference.py      # Inférence par lot, images annotées
+│   ├── split_dataset.py      # Division des jeux de données
+│   └── create_empty_labels.py # Créer des étiquettes vides
 ├── docs/                   # README traduits (zh / fr / es)
 ├── outputs/                # Résultats d'entraînement (git-ignoré)
 │   ├── result/             # Poids des modèles et graphiques

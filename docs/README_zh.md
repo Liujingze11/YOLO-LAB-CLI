@@ -52,8 +52,10 @@ YOLO-LAB-CLI/
 │   ├── i18n.py             # i18n 辅助函数
 │   └── paths.py            # 模型注册表
 ├── tools/                  # 工具脚本
-│   ├── predict_tools/      # 推理（predict.py + 任务参数）
-│   └── dataset_tools/      # 数据集划分与标签工具
+│   ├── predict.py            # 推理（任务参数外置 infer_task_params.json）
+│   ├── run_inference.py      # 批量推理，输出带标注图片
+│   ├── split_dataset.py      # 数据集划分（随机 / 每N取1）
+│   └── create_empty_labels.py # 创建同名空标签
 ├── docs/                   # 多语言 README（zh / fr / es）
 ├── outputs/                # 训练输出（git 忽略）
 │   ├── result/             # 模型权重与图表

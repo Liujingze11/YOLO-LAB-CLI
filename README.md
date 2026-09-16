@@ -52,8 +52,10 @@ YOLO-LAB-CLI/
 │   ├── i18n.py             # i18n helpers
 │   └── paths.py            # Model registry
 ├── tools/                  # Utility scripts
-│   ├── predict_tools/      # Inference (predict.py + task params)
-│   └── dataset_tools/      # Dataset splitting & label utilities
+│   ├── predict.py            # Inference (predict.py + task params)
+│   ├── run_inference.py      # Batch inference with annotated images
+│   ├── split_dataset.py      # Dataset splitting (random / every-N)
+│   └── create_empty_labels.py # Create empty label txts
 ├── docs/                   # Translated READMEs (zh / fr / es)
 ├── outputs/                # Training outputs (git-ignored)
 │   ├── result/             # Model weights & plots

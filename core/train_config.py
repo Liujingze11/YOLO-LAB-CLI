@@ -1,7 +1,3 @@
-"""Training configuration dataclass and user config persistence.
-
-Shared across YOLO-LAB-CLI, YOLO-LAB-GUI, and YOLO-LAB.
-"""
 import os
 import yaml
 from dataclasses import dataclass, field, asdict

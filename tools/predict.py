@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 
 # ensure project root on sys.path when run from anywhere
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from ultralytics import YOLO
 from cli_config import PREDICT_DIR, BEST_SEG_MODEL, TEST_IMAGES_DIR
