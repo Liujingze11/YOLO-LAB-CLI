@@ -29,8 +29,8 @@ def set_locale(loc):
     global _loc
     _loc = loc
 
-# === 类别过滤：不修改原始标注txt文件，训练时自动过滤+重映射 ===
-_CLASSES_FILTER = [1]  # o1_split / o2_split: 单类别 object（分割）
+# === 类别过滤：保留原始 class ID，YAML 中也保留 0 号占位类别 ===
+_CLASSES_FILTER = [1, 2, 3]  # F2: button / switch / DDBC（三类分割）
 
 # ── 确认流程（分步：YAML → 超参数 → 增强 → mixup）──────────
 
@@ -261,9 +261,11 @@ def ask_mixup(config):
 
     while True:
         choice = input(_t(_loc, "mixup.prompt")).strip()
-        if choice in ("", "y"):
-            return config.mixup if config.mixup > 0 else 0.2
+        if choice == "":
+            return config.mixup
         low = choice.lower()
+        if low == "y":
+            return config.mixup if config.mixup > 0 else 0.2
         if low == "q":
             print(f"\n{_t(_loc, 'confirm.quit')}")
             return None
@@ -277,7 +279,7 @@ def ask_mixup(config):
 
 
 def ask_save_all_epochs(config):
-    """Step: 是否保存所有 epoch 的权重文件。y=是, Enter=否, q=退出。"""
+    """Step: 是否保存所有 epoch 的权重文件。Enter=保持当前设置, y=是, n=否, q=退出。"""
     status = _t(_loc, "save_all_epochs.status_on") if config.save_all_epochs else _t(_loc, "save_all_epochs.status_off")
     print(f"\n------------------------------")
     print(_t(_loc, "save_all_epochs.title"))
@@ -290,7 +292,9 @@ def ask_save_all_epochs(config):
         if choice == "q":
             print(f"\n{_t(_loc, 'confirm.quit')}")
             return None
-        if choice in ("", "y"):
+        if choice == "":
+            return config.save_all_epochs
+        if choice == "y":
             return True
         if choice == "n":
             return False

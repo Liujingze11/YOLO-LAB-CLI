@@ -15,13 +15,16 @@ class TrainConfig:
     log_dir: str = ""
 
     # === hyperparameters ===
-    epochs: int = 100
+    epochs: int = 120
     imgsz: int = 640
     batch: int = 16
     device: str = field(default_factory=get_default_device)
-    # 新训练: yolov8n-seg pretrained → O1_split / O2_split (only_one_object) 全量数据
-    lr0: float = 5e-4
+    # 官方预训练权重 -> F2 三类分割对照训练；auto自动选择优化器及学习率。
+    optimizer: str = "auto"
+    # auto会覆盖lr0；此值仅为配置占位，不代表运行中的实际学习率。
+    lr0: float = 1e-3
     warmup_epochs: float = 3.0
+    warmup_bias_lr: float = 0.0
     lrf: float = 0.01
     close_mosaic: int = 10
     multi_scale: float = 0.0
@@ -31,13 +34,13 @@ class TrainConfig:
 
     save_all_epochs: bool = False
 
-    experiment_name: str = "o1_split_t7v3_n980_yolov8n-seg_e100_lr5e-4_freeze0_V1"
+    experiment_name: str = "f2_t8v2_n3129_yolov8n-seg_pretrained_auto_e120_freeze0_V1"
 
     # === data augmentation ===
     use_augment: bool = True
     hsv_h: float = 0.015
     hsv_s: float = 0.7
-    hsv_v: float = 0.4
+    hsv_v: float = 0.5
     degrees: float = 0.0
     translate: float = 0.1
     scale: float = 0.3
@@ -48,7 +51,7 @@ class TrainConfig:
     mosaic: float = 1.0
     mixup: float = 0.0
     copy_paste: float = 0.0
-    erasing: float = 0.4
+    erasing: float = 0.2
 
     @property
     def save_dir(self) -> str:

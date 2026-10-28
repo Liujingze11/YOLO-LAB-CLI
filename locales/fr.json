@@ -70,7 +70,7 @@
   "mixup.status_on": "ACTIVÉE (mixup={value})",
   "mixup.status_off": "DÉSACTIVÉE",
   "mixup.current": "Valeur par défaut : {status}",
-  "mixup.prompt": "(y/n, enter=y, nombre=0~1, q=quitter): ",
+  "mixup.prompt": "(y=activer/n=désactiver, Entrée=conserver le réglage actuel, nombre=0~1, q=quitter): ",
 
   "resume.not_found": "Poids de reprise introuvables : {path}",
   "save_all_epochs.title": "Sauvegarder tous les poids d'époques",
@@ -78,7 +78,7 @@
   "save_all_epochs.status_off": "Non (seulement best.pt + last.pt)",
   "save_all_epochs.current": "Valeur par défaut : {status}",
   "save_all_epochs.size_hint": "Chaque fichier de poids fait ~6,5MB",
-  "save_all_epochs.prompt": "(y/n, enter=y, q=quitter): ",
+  "save_all_epochs.prompt": "(y=activer/n=désactiver, Entrée=conserver le réglage actuel, q=quitter): ",
 
   "resume.fallback_prompt": "(y/n, enter=y, q=quitter): ",
   "resume.cancelled": "Annulé.",

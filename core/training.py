@@ -26,8 +26,10 @@ def build_train_kwargs(config, use_augment: bool, classes: list = None) -> dict:
         "name": config.experiment_name,
         "exist_ok": True,
         "plots": True,
+        "optimizer": config.optimizer,
         "lr0": config.lr0,
         "warmup_epochs": getattr(config, "warmup_epochs", 3.0),
+        "warmup_bias_lr": config.warmup_bias_lr,
         "lrf": getattr(config, "lrf", 0.01),
         "close_mosaic": config.close_mosaic,
         "multi_scale": config.multi_scale,
@@ -35,8 +37,8 @@ def build_train_kwargs(config, use_augment: bool, classes: list = None) -> dict:
     }
     if getattr(config, "freeze", 0) > 0:
         kwargs["freeze"] = config.freeze
-    # === 类别过滤：不修改原始标注文件，训练时过滤 + 自动重映射 ===
-    # classes 为旧 class ID 列表，Ultralytics 会自动过滤并重映射为 0,1,2,...
+    # === 类别过滤：不修改原始标注文件，训练时只保留指定类别 ===
+    # Ultralytics 保留原 class ID，不自动重映射；YAML 的 names 必须覆盖这些 ID。
     # 设为 None 则不过滤，使用标注文件中的全部类别
     if classes is not None:
         kwargs["classes"] = classes

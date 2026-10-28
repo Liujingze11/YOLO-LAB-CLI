@@ -71,14 +71,14 @@
   "mixup.status_on": "开启 (mixup={value})",
   "mixup.status_off": "关闭",
   "mixup.current": "当前默认值：{status}",
-  "mixup.prompt": "(y/n, enter=y, 数字=0~1, q=exit): ",
+  "mixup.prompt": "(y=开启/n=关闭, 回车=保持当前设置, 数字=0~1, q=退出): ",
 
   "save_all_epochs.title": "保存所有 Epoch 权重",
   "save_all_epochs.status_on": "是（每个 epoch 一个权重文件，约 6.5MB/个）",
   "save_all_epochs.status_off": "否（仅保存 best.pt + last.pt）",
   "save_all_epochs.current": "当前默认值：{status}",
   "save_all_epochs.size_hint": "每个权重文件约 6.5MB",
-  "save_all_epochs.prompt": "(y/n, enter=y, q=exit): ",
+  "save_all_epochs.prompt": "(y=开启/n=关闭, 回车=保持当前设置, q=退出): ",
 
   "all_settings": "✓ 所有设置已完成，开始训练",
 

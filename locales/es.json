@@ -70,7 +70,7 @@
   "mixup.status_on": "ACTIVADO (mixup={value})",
   "mixup.status_off": "DESACTIVADO",
   "mixup.current": "Valor predeterminado: {status}",
-  "mixup.prompt": "(y/n, enter=y, número=0~1, q=salir): ",
+  "mixup.prompt": "(y=activar/n=desactivar, Enter=mantener la configuración actual, número=0~1, q=salir): ",
 
   "resume.not_found": "No se encontraron pesos de reanudación: {path}",
   "save_all_epochs.title": "Guardar pesos de todas las épocas",
@@ -78,7 +78,7 @@
   "save_all_epochs.status_off": "No (solo best.pt + last.pt)",
   "save_all_epochs.current": "Valor predeterminado: {status}",
   "save_all_epochs.size_hint": "Cada archivo de pesos pesa ~6.5MB",
-  "save_all_epochs.prompt": "(y/n, enter=y, q=salir): ",
+  "save_all_epochs.prompt": "(y=activar/n=desactivar, Enter=mantener la configuración actual, q=salir): ",
 
   "resume.fallback_prompt": "(y/n, enter=y, q=salir): ",
   "resume.cancelled": "Cancelado.",

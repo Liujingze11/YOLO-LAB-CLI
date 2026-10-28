@@ -71,14 +71,14 @@
   "mixup.status_on": "ON (mixup={value})",
   "mixup.status_off": "OFF",
   "mixup.current": "Current default: {status}",
-  "mixup.prompt": "(y/n, enter=y, number=0~1, q=exit): ",
+  "mixup.prompt": "(y=on/n=off, enter=keep current, number=0~1, q=exit): ",
 
   "save_all_epochs.title": "Save All Epoch Weights",
   "save_all_epochs.status_on": "Yes (~800MB for 120 epochs)",
   "save_all_epochs.status_off": "No (only best.pt + last.pt)",
   "save_all_epochs.current": "Current default: {status}",
   "save_all_epochs.size_hint": "Each weight file is ~6.5MB",
-  "save_all_epochs.prompt": "(y/n, enter=y, q=exit): ",
+  "save_all_epochs.prompt": "(y=on/n=off, enter=keep current, q=exit): ",
 
   "all_settings": "✓ All settings confirmed, starting training",
 
